@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
 use amos\results\models\Result;
 use amos\results\models\search\ResultSearch;
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class ResultsToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class ResultsToValidate extends ResultSearch implements MyActivitiesModelsInterface
 {
@@ -65,5 +65,13 @@ class ResultsToValidate extends ResultSearch implements MyActivitiesModelsInterf
     public function getWrappedObject()
     {
         return Result::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'results/result/view';
     }
 }

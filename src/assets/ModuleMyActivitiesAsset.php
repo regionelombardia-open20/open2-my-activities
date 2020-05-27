@@ -1,28 +1,29 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\assets
+ * @package    open20\amos\myactivities\assets
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\assets;
+namespace open20\amos\myactivities\assets;
 
+use open20\amos\core\widget\WidgetAbstract;
 use yii\web\AssetBundle;
 
 /**
  * Class ModuleMyActivitiesAsset
- * @package lispa\amos\myactivities\assets
+ * @package open20\amos\myactivities\assets
  */
 class ModuleMyActivitiesAsset extends AssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@vendor/lispa/amos-my-activities/src/assets/web';
+    public $sourcePath = '@vendor/open20/amos-my-activities/src/assets/web';
 
     /**
      * @inheritdoc
@@ -50,10 +51,16 @@ class ModuleMyActivitiesAsset extends AssetBundle
     public function init()
     {
         $moduleL = \Yii::$app->getModule('layout');
+
+        if(!empty(\Yii::$app->params['dashboardEngine']) && \Yii::$app->params['dashboardEngine'] == WidgetAbstract::ENGINE_ROWS){
+            $this->css = ['less/my-activities_fullsize.less'];
+        }
+
+
         if (!empty($moduleL)) {
-            $this->depends [] = 'lispa\amos\layout\assets\BaseAsset';
+            $this->depends [] = 'open20\amos\layout\assets\BaseAsset';
         } else {
-            $this->depends [] = 'lispa\amos\core\views\assets\AmosCoreAsset';
+            $this->depends [] = 'open20\amos\core\views\assets\AmosCoreAsset';
         }
         parent::init();
     }

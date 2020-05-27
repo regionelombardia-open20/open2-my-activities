@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 use yii\web\View;
 
-/** @var $model \lispa\amos\myactivities\basic\EventToValidate */
+/** @var $model \open20\amos\myactivities\basic\EventToValidate */
 
 $js = "
 $('.events-reject-btns').on('click', function(event) {
@@ -32,7 +32,7 @@ $this->registerJs($js, View::POS_READY);
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('calendar', [], 'dash') ?>
     </div>
-    <?= \lispa\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'Validation event'),
     ]) ?>

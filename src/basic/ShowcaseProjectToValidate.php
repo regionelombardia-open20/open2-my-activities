@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\showcaseprojects\models\search\ShowcaseProjectSearch;
-use lispa\amos\showcaseprojects\models\ShowcaseProject;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\showcaseprojects\models\search\ShowcaseProjectSearch;
+use open20\amos\showcaseprojects\models\ShowcaseProject;
 
 /**
  * Class ShowcaseProjectToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class ShowcaseProjectToValidate extends ShowcaseProjectSearch implements MyActivitiesModelsInterface
 {

@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\een\models\EenExprOfInterest;
-use lispa\amos\een\models\search\EenExprOfInterestSearch;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\een\models\EenExprOfInterest;
+use open20\amos\een\models\search\EenExprOfInterestSearch;
 
 /**
  * Class EenExpressionOfInterestToTakeover
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class EenExpressionOfInterestToTakeover extends EenExprOfInterestSearch implements MyActivitiesModelsInterface
 {

@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 use yii\helpers\Url;
 
 /**
  * Class OrganizationsToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class OrganizationsToValidate extends \openinnovation\organizations\models\search\OrganizationsSearch implements MyActivitiesModelsInterface
 {
@@ -55,6 +55,7 @@ class OrganizationsToValidate extends \openinnovation\organizations\models\searc
         if (!empty($userProfile)) {
             return $userProfile->getNomeCognome();
         }
+        
         return '';
     }
 
@@ -66,9 +67,13 @@ class OrganizationsToValidate extends \openinnovation\organizations\models\searc
         return \openinnovation\organizations\models\Organizations::findOne($this->id);
     }
 
+    /**
+     * 
+     * @return string
+     */
     public function getViewUrl()
     {
-        return '/organizations/organizations/view';
+        return 'organizations/organizations/view';
     }
 
     /**

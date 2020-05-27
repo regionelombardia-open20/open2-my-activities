@@ -1,23 +1,24 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class ReportToRead
- * @package lispa\amos\myactivities\basic
+ * @see \open20\amos\report\models\Report
+ * @package open20\amos\myactivities\basic
  */
-class ReportToRead extends \lispa\amos\report\models\Report implements MyActivitiesModelsInterface
+class ReportToRead extends \open20\amos\report\models\Report implements MyActivitiesModelsInterface
 {
     /**
      * @return string
@@ -58,10 +59,10 @@ class ReportToRead extends \lispa\amos\report\models\Report implements MyActivit
     }
 
     /**
-     * @return \lispa\amos\report\models\Report
+     * @return \open20\amos\report\models\Report
      */
     public function getWrappedObject()
     {
-        return \lispa\amos\report\models\Report::findOne($this->id);
+        return \open20\amos\report\models\Report::findOne($this->id);
     }
 }

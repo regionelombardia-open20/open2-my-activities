@@ -12,20 +12,20 @@
 namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
-use open20\amos\discussioni\models\DiscussioniTopic;
 
 /**
- * Class DiscussionToValidate
+ * Class RequestToParticipateCommunity
+ * @see \open20\amos\community\models\Community
  * @package open20\amos\myactivities\basic
  */
-class DiscussionToValidate extends \open20\amos\discussioni\models\search\DiscussioniTopicSearch implements MyActivitiesModelsInterface
+class RequestExternalFacilitator extends \open20\amos\admin\models\UserProfileExternalFacilitator implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return $this->titolo;
+        return $this->getCreatorNameSurname();
     }
 
     /**
@@ -59,18 +59,10 @@ class DiscussionToValidate extends \open20\amos\discussioni\models\search\Discus
     }
 
     /**
-     * @return DiscussioniTopic
+     * @return \open20\amos\community\models\CommunityUserMm
      */
     public function getWrappedObject()
     {
-        return DiscussioniTopic::findOne($this->id);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getViewUrl()
-    {
-        return 'discussioni/discussioni-topic/partecipa';
+        return \open20\amos\admin\models\UserProfileExternalFacilitator::findOne($this->id);
     }
 }

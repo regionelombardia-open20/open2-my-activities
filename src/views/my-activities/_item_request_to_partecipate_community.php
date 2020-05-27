@@ -1,25 +1,25 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\admin\AmosAdmin;
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\admin\widgets\UserCardWidget;
-use lispa\amos\community\widgets\JoinCommunityWidget;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\admin\widgets\UserCardWidget;
+use open20\amos\community\widgets\JoinCommunityWidget;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\RequestToParticipateCommunityForManager */
+/** @var $model \open20\amos\myactivities\basic\RequestToParticipateCommunityForManager */
 //pr($model->getSearchString(), 'CLASSE: ' . $model->className() . ' creato: ' . $model->getCreatedAt());
-//\lispa\amos\core\views\assets\AmosCoreAsset::register($this);
+//\open20\amos\core\views\assets\AmosCoreAsset::register($this);
 $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])->one();
 ?>
 <?php if (!empty($userProfile)): ?>

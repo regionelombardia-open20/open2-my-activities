@@ -1,14 +1,14 @@
 <?php
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\migrations
+ * @package    open20\amos\myactivities\migrations
  * @category   CategoryName
  */
 
-class m170726_094044_translation_add_label extends \lispa\amos\core\migration\AmosMigrationTranslations
+class m170726_094044_translation_add_label extends \open20\amos\core\migration\AmosMigrationTranslations
 {
     const CATEGORY = 'amosmyactivities';
 

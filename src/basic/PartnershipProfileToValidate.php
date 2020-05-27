@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\partnershipprofiles\models\PartnershipProfiles;
-use lispa\amos\partnershipprofiles\models\search\PartnershipProfilesSearch;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\partnershipprofiles\models\PartnershipProfiles;
+use open20\amos\partnershipprofiles\models\search\PartnershipProfilesSearch;
 
 /**
  * Class PartnershipProfileToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class PartnershipProfileToValidate extends PartnershipProfilesSearch implements MyActivitiesModelsInterface
 {
@@ -65,5 +65,13 @@ class PartnershipProfileToValidate extends PartnershipProfilesSearch implements 
     public function getWrappedObject()
     {
         return PartnershipProfiles::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'partnershipprofiles/partnership-profiles/view';
     }
 }

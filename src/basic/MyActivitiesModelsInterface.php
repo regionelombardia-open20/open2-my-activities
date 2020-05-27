@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
 /**
  * Interface MyActivitiesModelsInterface
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 interface MyActivitiesModelsInterface
 {
@@ -38,7 +38,7 @@ interface MyActivitiesModelsInterface
     public function getSearchString();
 
     /**
-     * @return \lispa\amos\core\record\Record
+     * @return \open20\amos\core\record\Record
      */
     public function getWrappedObject();
 }

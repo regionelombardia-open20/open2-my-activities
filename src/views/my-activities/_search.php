@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\core\forms\ActiveForm;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\core\forms\ActiveForm;
+use open20\amos\core\helpers\Html;
+use open20\amos\myactivities\AmosMyActivities;
 
 /**
- * @var \lispa\amos\myactivities\models\search\MyActivitiesModelSearch $modelSearch
+ * @var \open20\amos\myactivities\models\search\MyActivitiesModelSearch $modelSearch
  */
 
 ?>

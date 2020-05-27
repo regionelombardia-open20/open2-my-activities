@@ -1,20 +1,20 @@
 {
-  "name": "lispa/amos-my-activities",
+  "name": "open20/amos-my-activities",
   "description": "AMOS plugin to manage platform activities)",
   "keywords": ["amos", "yii2", "activities", "myactivities"],
-  "homepage": "http://www.lispa.it/",
+  "homepage": "http://www.open20.it/",
   "type": "component",
-  "proscription": "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "require": {
     "php": ">=5.4.0",
-    "lispa/amos-core" : "*",
-    "lispa/amos-admin" : "*",
-    "lispa/amos-notify" : "*",
-    "lispa/amos-workflow" : "*"
+    "open20/amos-core":"^1.9.60",
+    "open20/amos-admin": "^2.2.0.",
+    "open20/amos-notify": "^1.4",
+    "open20/amos-workflow": "*"
   },
   "autoload": {
     "psr-4": {
-      "lispa\\amos\\myactivities\\": "src"
+      "open20\\amos\\myactivities\\": "src"
     }
   },
   "require-dev": {

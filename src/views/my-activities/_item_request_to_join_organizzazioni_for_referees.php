@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\admin\AmosAdmin;
-use lispa\amos\admin\widgets\UserCardWidget;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
+use open20\amos\admin\widgets\UserCardWidget;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 
 /**
- * @var \lispa\amos\myactivities\basic\RequestToJoinOrganizzazioniForReferees $model
+ * @var \open20\amos\myactivities\basic\RequestToJoinOrganizzazioniForReferees $model
  */
 
 $userProfile = (!is_null($model->user) ? $model->user->userProfile : null);

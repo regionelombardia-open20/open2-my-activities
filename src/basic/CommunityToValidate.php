@@ -1,24 +1,24 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\community\models\Community;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\community\models\Community;
 
 /**
  * Class CommunityToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
-class CommunityToValidate extends \lispa\amos\community\models\search\CommunitySearch implements MyActivitiesModelsInterface
+class CommunityToValidate extends \open20\amos\community\models\search\CommunitySearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
@@ -64,5 +64,13 @@ class CommunityToValidate extends \lispa\amos\community\models\search\CommunityS
             return $userProfile->getNomeCognome();
         }
         return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'community/community/view';
     }
 }

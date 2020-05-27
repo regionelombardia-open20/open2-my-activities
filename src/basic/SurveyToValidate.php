@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class SurveyToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
-class SurveyToValidate extends \lispa\amos\sondaggi\models\Sondaggi implements MyActivitiesModelsInterface
+class SurveyToValidate extends \open20\amos\sondaggi\models\Sondaggi implements MyActivitiesModelsInterface
 {
     /**
      * @return string
@@ -58,10 +58,10 @@ class SurveyToValidate extends \lispa\amos\sondaggi\models\Sondaggi implements M
     }
 
     /**
-     * @return \lispa\amos\sondaggi\models\Sondaggi
+     * @return \open20\amos\sondaggi\models\Sondaggi
      */
     public function getWrappedObject()
     {
-        return \lispa\amos\sondaggi\models\Sondaggi::findOne($this->id);
+        return \open20\amos\sondaggi\models\Sondaggi::findOne($this->id);
     }
 }

@@ -1,27 +1,30 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities
+ * @package    open20\amos\myactivities
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities;
+namespace open20\amos\myactivities;
 
-use lispa\amos\core\module\AmosModule;
-use lispa\amos\myactivities\widgets\icons\WidgetIconMyActivities;
+use open20\amos\core\module\AmosModule;
+use open20\amos\myactivities\widgets\icons\WidgetIconMyActivities;
 
 /**
  * Class AmosMyActivities
- * @package lispa\amos\myactivities
+ * @package open20\amos\myactivities
  */
 class AmosMyActivities extends AmosModule
 {
-    public $controllerNamespace = 'lispa\amos\myactivities\controllers';
+    public $controllerNamespace = 'open20\amos\myactivities\controllers';
     public $name = 'MYACTIVITIES';
+    
+    public $orderType = 'SORT_ASC';
+
 
     /**
      * @inheritdoc
@@ -37,7 +40,7 @@ class AmosMyActivities extends AmosModule
     public function init()
     {
         parent::init();
-        \Yii::setAlias('@lispa/amos/' . static::getModuleName() . '/controllers', __DIR__ . '/controllers/');
+        \Yii::setAlias('@open20/amos/' . static::getModuleName() . '/controllers', __DIR__ . '/controllers/');
         \Yii::configure($this, require(__DIR__ . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php'));
     }
 

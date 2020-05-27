@@ -21,10 +21,10 @@ use open20\amos\workflow\behaviors\WorkflowLogFunctionsBehavior;
 use yii\base\Widget;
 
 /**
- * Class UserRequestValidation
+ * Class UserRequestConnection
  * @package open20\amos\myactivities\widgets
  */
-class UserRequestValidation extends Widget
+class UserRequestConnection extends Widget
 {
     /**
      * @var Record|MyActivitiesModelsInterface $model
@@ -54,33 +54,21 @@ class UserRequestValidation extends Widget
     public function run()
     {
         /** @var WorkflowLogFunctionsBehavior|WorkflowModelInterface $model */
-        $model = $this->model->getWrappedObject();
-        $workflowModule = \Yii::$app->getModule('workflow');
-        if ($workflowModule) {
-            $userId = $model->getStatusLastUpdateUser($model->getToValidateStatus());
-            $validationRequestTime = $model->getStatusLastUpdateTime($model->getToValidateStatus());
-        }
-        if (is_null($userId)) {
-            $userId = $model->updated_by;
-            if (is_null($userId)) {
-                $userId = $model->created_by;
-            }
-            $validationRequestTime = $model->updated_at;
-            if (is_null($validationRequestTime)) {
-                $validationRequestTime = $model->created_at;
-            }
-        }
-        if (!is_null($userId)) {
+        $model = $this->model;
+            $userId = $model->user_id;
+
             $userProfile = UserProfile::find()->andWhere(['user_id' => $userId])->one();
             if (!is_null($userProfile)) {
-                return $this->render('user_request_validation', [
+                return $this->render('user_request_connection', [
                     'userProfile' => $userProfile,
                     'model' => $this->model,
-                    'validationRequestTime' => $validationRequestTime,
-                    'labelKey' => $this->labelKey
+                    'requestTime' => $model->created_at,
+                    'project' => $model->showcaseProject->title,
+                    'labelKey' => $this->labelKey,
+
                 ]);
             }
-        }
+        else
         return '';
     }
 }

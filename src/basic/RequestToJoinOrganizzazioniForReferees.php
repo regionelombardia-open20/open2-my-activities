@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
 /**
  * Class RequestToJoinOrganizzazioniForReferees
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
-class RequestToJoinOrganizzazioniForReferees extends \lispa\amos\organizzazioni\models\ProfiloUserMm implements MyActivitiesModelsInterface
+class RequestToJoinOrganizzazioniForReferees extends \open20\amos\organizzazioni\models\ProfiloUserMm implements MyActivitiesModelsInterface
 {
     /**
      * @return string
@@ -50,10 +50,10 @@ class RequestToJoinOrganizzazioniForReferees extends \lispa\amos\organizzazioni\
     }
 
     /**
-     * @return \lispa\amos\organizzazioni\models\ProfiloUserMm
+     * @return \open20\amos\organizzazioni\models\ProfiloUserMm
      */
     public function getWrappedObject()
     {
-        return \lispa\amos\organizzazioni\models\ProfiloUserMm::findOne($this->id);
+        return \open20\amos\organizzazioni\models\ProfiloUserMm::findOne($this->id);
     }
 }

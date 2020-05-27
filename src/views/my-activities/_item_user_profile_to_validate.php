@@ -1,26 +1,26 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\core\utilities\ModalUtility;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\core\utilities\ModalUtility;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\WaitingContacts */
+/** @var $model \open20\amos\myactivities\basic\WaitingContacts */
 
 ?>
 <div class="wrap-activity">
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('users', [], 'dash') ?>
     </div>
-    <?= \lispa\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'User validation request'),
     ]) ?>

@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\admin\AmosAdmin;
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\admin\widgets\UserCardWidget;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\admin\widgets\UserCardWidget;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\WaitingContacts */
+/** @var $model \open20\amos\myactivities\basic\WaitingContacts */
 
 $userProfile = UserProfile::find()->andWhere(['user_id' => $model->user_id])->one();
 ?>
@@ -53,7 +53,7 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->user_id])->on
             </div>
         </div>
         <div class="col-md-3 col-xs-12 wrap-action">
-            <?= \lispa\amos\admin\widgets\ConnectToUserWidget::widget(['model' => $userProfile]) ?>
+            <?= \open20\amos\admin\widgets\ConnectToUserWidget::widget(['model' => $userProfile]) ?>
         </div>
     </div>
     <hr>

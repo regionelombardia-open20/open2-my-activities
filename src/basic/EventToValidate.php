@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\events\models\Event;
-use lispa\amos\events\models\search\EventSearch;
+use open20\amos\events\models\Event;
+use open20\amos\events\models\search\EventSearch;
 
 /**
  * Class EventToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class EventToValidate extends EventSearch implements MyActivitiesModelsInterface
 {
@@ -59,5 +59,13 @@ class EventToValidate extends EventSearch implements MyActivitiesModelsInterface
     public function getWrappedObject()
     {
         return Event::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'events/event/view';
     }
 }

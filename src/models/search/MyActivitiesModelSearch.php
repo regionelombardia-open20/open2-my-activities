@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\models\search
+ * @package    open20\amos\myactivities\models\search
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\models\search;
+namespace open20\amos\myactivities\models\search;
 
-use lispa\amos\myactivities\AmosMyActivities;
-use lispa\amos\myactivities\basic\MyActivitiesModelsInterface;
+use open20\amos\myactivities\AmosMyActivities;
+use open20\amos\myactivities\basic\MyActivitiesModelsInterface;
 use yii\base\Model;
 
 /**
  * Class MyActivitiesModelSearch
- * @package lispa\amos\myactivities\models\search
+ * @package open20\amos\myactivities\models\search
  */
 class MyActivitiesModelSearch extends Model implements MyActivitiesModelsInterface
 {

@@ -1,18 +1,20 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\i18n\it-IT
+ * @package    open20\amos\myactivities\i18n\it-IT
  * @category   CategoryName
  */
 
 return [
+    'Accept' => 'Accetta',
     'Activate' => 'Attiva',
     '#ACTIVATE_USER_PROFILE' => 'Vuoi riattivare il profilo utente?',
     'Ascending' => 'Crescente',
+    ' asks connection for:' => 'Chiede di collaborare al progetto:',
     ' asks to accept the invitation to participate you to the community:' => ' chiede di accettare l\'invito di partecipazione che ti ha inviato per la community:',
     ' asks to be validated' => ' chiede di essere validato',
     ' asks validation for:' => ' chiede la validazione per:',
@@ -20,6 +22,7 @@ return [
     ' asks you to be accepted as a community participant of your Community:' => 'chiede di essere accettato come partecipante alla tua Community:',
     'asks you to be accepted as a headquarter member of the headquarter:' => 'chiede di essere accettato come membro della sede:',
     'asks you to be accepted as an organization member of the organization:' => "chiede di essere accettato come membro dell'organizzazione:",
+    'asks you to accept the invitation to participate to the organization:' => "chiede di accettare l'invito di partecipazione che ti ha inviato per l'organizzazione:",
     ' asks you to enter your network of contacts' => ' chiede di entrare nella tua rete di contatti',
     'Community Validation' => 'Validazione Community',
     'Contact request' => 'Richiesta di contatto',
@@ -53,6 +56,7 @@ return [
     ' sent this report' => ' ha inviato questa segnalazione',
     ' sent this report:' => 'inviato il report:',
     '#showcaseprojectvalidation' => 'Progetti da validare',
+    '#showcaseprojectuseraccept' => 'Collaborazione progetto',
     'Sort by' => 'Ordina per',
     'Sort' => 'Ordina',
     'Take charge' => 'Inizia validazione',
@@ -70,5 +74,6 @@ return [
     'Validazione discussione' => 'Validazione discussione',
     'Vedi scheda' => 'Vedi scheda',
     'View card' => 'Vedi scheda',
+    '#view_organization' => 'Vedi organizzazione',
     'View profile' => 'Vedi profilo',
 ];

@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
 /**
  * Interface MyActivitiesListInterface
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 interface MyActivitiesListInterface
 {

@@ -12,17 +12,21 @@
 namespace open20\amos\myactivities\basic;
 
 /**
- * Class RequestToJoinOrganizzazioniSediForReferees
+ * Class RequestToJoinOrganizzazioniForEmployees
  * @package open20\amos\myactivities\basic
  */
-class RequestToJoinOrganizzazioniSediForReferees extends \open20\amos\organizzazioni\models\ProfiloSediUserMm implements MyActivitiesModelsInterface
+class RequestToJoinOrganizzazioniForEmployees extends \open20\amos\organizzazioni\models\ProfiloUserMm implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return ((!is_null($this->user) && !is_null($this->user->userProfile)) ? $this->user->userProfile->getNomeCognome() : '');
+        $userProfile = $this->createdUserProfile;
+        if (is_null($userProfile)) {
+            return '';
+        }
+        return $userProfile->getNomeCognome();
     }
 
     /**
@@ -46,14 +50,15 @@ class RequestToJoinOrganizzazioniSediForReferees extends \open20\amos\organizzaz
      */
     public function getCreatorNameSurname()
     {
-        return (!is_null($this->createdUserProfile) ? $this->createdUserProfile->getNomeCognome() : '');
+        $createdUserProfile = $this->createdUserProfile;
+        return (!is_null($createdUserProfile) ? $createdUserProfile->getNomeCognome() : '');
     }
 
     /**
-     * @return \open20\amos\organizzazioni\models\ProfiloSediUserMm
+     * @return \open20\amos\organizzazioni\models\ProfiloUserMm
      */
     public function getWrappedObject()
     {
-        return \open20\amos\organizzazioni\models\ProfiloSediUserMm::findOne($this->id);
+        return \open20\amos\organizzazioni\models\ProfiloUserMm::findOne($this->id);
     }
 }

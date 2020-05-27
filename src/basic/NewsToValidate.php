@@ -1,24 +1,24 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\news\models\News;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\news\models\News;
 
 /**
  * Class NewsToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
-class NewsToValidate extends \lispa\amos\news\models\search\NewsSearch implements MyActivitiesModelsInterface
+class NewsToValidate extends \open20\amos\news\models\search\NewsSearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
@@ -64,5 +64,13 @@ class NewsToValidate extends \lispa\amos\news\models\search\NewsSearch implement
     public function getWrappedObject()
     {
         return News::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'news/news/view';
     }
 }

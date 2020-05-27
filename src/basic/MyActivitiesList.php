@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\myactivities\models\search\MyActivitiesModelSearch;
+use open20\amos\myactivities\models\search\MyActivitiesModelSearch;
 use yii\helpers\ArrayHelper;
 
 /**
  * Class MyActivitiesList
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class MyActivitiesList implements MyActivitiesListInterface
 {
@@ -85,7 +85,8 @@ class MyActivitiesList implements MyActivitiesListInterface
                 return;
             }
         }
-        $this->sortMyActivitiesList();
+        $myActivitiesModule = \Yii::$app->getModule('myactivities');
+        $this->sortMyActivitiesList($myActivitiesModule->orderType);
     }
 
     /**

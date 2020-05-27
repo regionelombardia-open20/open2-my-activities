@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\controllers
+ * @package    open20\amos\myactivities\controllers
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\controllers;
+namespace open20\amos\myactivities\controllers;
 
-use lispa\amos\core\controllers\CrudController;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
-use lispa\amos\myactivities\models\MyActivities;
-use lispa\amos\myactivities\models\search\MyActivitiesModelSearch;
+use open20\amos\core\controllers\CrudController;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
+use open20\amos\myactivities\models\MyActivities;
+use open20\amos\myactivities\models\search\MyActivitiesModelSearch;
 use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -27,10 +27,10 @@ use yii\helpers\Url;
  * Class MyActivitiesController
  * MyActivitiesController implements the CRUD actions
  *
- * @property \lispa\amos\myactivities\models\MyActivities $model
- * @property \lispa\amos\myactivities\models\MyActivities $modelSearch
+ * @property \open20\amos\myactivities\models\MyActivities $model
+ * @property \open20\amos\myactivities\models\MyActivities $modelSearch
  *
- * @package lispa\amos\myactivities\controllers
+ * @package open20\amos\myactivities\controllers
  */
 class MyActivitiesController extends CrudController
 {
@@ -56,6 +56,7 @@ class MyActivitiesController extends CrudController
         ]);
 
         parent::init();
+        
         $this->setUpLayout();
     }
 
@@ -92,11 +93,12 @@ class MyActivitiesController extends CrudController
      */
     public function actionIndex($layout = NULL)
     {
+        /** @var \open20\amos\cwh\AmosCwh $moduleCwh */
         $moduleCwh = \Yii::$app->getModule('cwh');
         if (isset($moduleCwh)) {
-            /** @var \lispa\amos\cwh\AmosCwh $moduleCwh */
             $moduleCwh->resetCwhScopeInSession();
         }
+        
         Url::remember();
         $this->setUpLayout('list');
 
@@ -105,6 +107,7 @@ class MyActivitiesController extends CrudController
 
         $model = new MyActivities();
         $listOfActivities = $model->getMyActivities($modelSearch);
+        
         $dataProvider = new ArrayDataProvider();
         if (count($listOfActivities) > 0) {
             $dataProvider->setModels($listOfActivities);
@@ -116,6 +119,7 @@ class MyActivitiesController extends CrudController
         $this->dataProvider = $dataProvider;
 
         $this->setModelSearch($modelSearch);
+        
         return parent::actionIndex();
     }
 }

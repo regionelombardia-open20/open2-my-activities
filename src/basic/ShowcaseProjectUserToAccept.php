@@ -12,20 +12,23 @@
 namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
-use open20\amos\discussioni\models\DiscussioniTopic;
+use open20\amos\showcaseprojects\models\search\ShowcaseProjectSearch;
+use open20\amos\showcaseprojects\models\search\ShowcaseProjectUserMmSearch;
+use open20\amos\showcaseprojects\models\ShowcaseProject;
+use yii\helpers\Url;
 
 /**
- * Class DiscussionToValidate
+ * Class ShowcaseProjectUserToAccept
  * @package open20\amos\myactivities\basic
  */
-class DiscussionToValidate extends \open20\amos\discussioni\models\search\DiscussioniTopicSearch implements MyActivitiesModelsInterface
+class ShowcaseProjectUserToAccept extends ShowcaseProjectUserMmSearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return $this->titolo;
+        return $this->showcaseProject->title;
     }
 
     /**
@@ -33,6 +36,7 @@ class DiscussionToValidate extends \open20\amos\discussioni\models\search\Discus
      */
     public function getCreatedAt()
     {
+        pr($this->created_at);die();
         return $this->created_at;
     }
 
@@ -50,7 +54,7 @@ class DiscussionToValidate extends \open20\amos\discussioni\models\search\Discus
      */
     public function getCreatorNameSurname()
     {
-        /** @var UserProfile $userProfile */
+        /** @var UserProfile $userProfile*/
         $userProfile = UserProfile::find()->andWhere(['user_id' => $this->created_by])->one();
         if (!empty($userProfile)) {
             return $userProfile->getNomeCognome();
@@ -59,18 +63,28 @@ class DiscussionToValidate extends \open20\amos\discussioni\models\search\Discus
     }
 
     /**
-     * @return DiscussioniTopic
+     * @return ShowcaseProject
      */
     public function getWrappedObject()
     {
-        return DiscussioniTopic::findOne($this->id);
+        return ShowcaseProject::findOne($this->showcase_project_id);
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getViewUrl()
+    {
+        return '/showcaseprojects/showcase-project/view';
     }
 
     /**
      * @inheritdoc
      */
-    public function getViewUrl()
+    public function getFullViewUrl()
     {
-        return 'discussioni/discussioni-topic/partecipa';
+        return Url::toRoute(["/" . $this->getViewUrl(), "id" => $this->showcase_project_id]);
     }
 }

@@ -1,36 +1,39 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class UserProfileToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class UserProfileToValidate extends UserProfile implements MyActivitiesModelsInterface
 {
+    private $searchStringToValidate = '';
+
+    public function init()
+    {
+        parent::init();
+        $this->searchStringToValidate = (!is_null($this->createdUserProfile) ? $this->createdUserProfile->getNomeCognome() : '');
+    }
+
     /**
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
     public function getSearchString()
     {
-        /** @var UserProfile $userProfile */
-        $userProfile = UserProfile::find()->andWhere(['user_id' => $this->created_by])->one();
-        if (!empty($userProfile)) {
-            return $userProfile->getNomeCognome();
-        }
-        return '';
+        return $this->searchStringToValidate;
     }
 
     /**
@@ -55,12 +58,7 @@ class UserProfileToValidate extends UserProfile implements MyActivitiesModelsInt
      */
     public function getCreatorNameSurname()
     {
-        /** @var UserProfile $userProfile */
-        $userProfile = UserProfile::find()->andWhere(['user_id' => $this->created_by])->one();
-        if (!empty($userProfile)) {
-            return $userProfile->getNomeCognome();
-        }
-        return '';
+        return $this->searchStringToValidate;
     }
 
     /**

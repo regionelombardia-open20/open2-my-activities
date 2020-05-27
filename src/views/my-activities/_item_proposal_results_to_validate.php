@@ -1,26 +1,26 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\ResultsProposalToValidate */
+/** @var $model \open20\amos\myactivities\basic\ResultsProposalToValidate */
 
 ?>
 <div class="wrap-activity">
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('gears', [], 'dash') ?>
     </div>
-    <?= \lispa\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', '#resultproposalvalidation'),
     ]) ?>

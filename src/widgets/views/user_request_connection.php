@@ -18,7 +18,7 @@ use open20\amos\myactivities\AmosMyActivities;
 /**
  * @var yii\web\View $this
  * @var \open20\amos\admin\models\UserProfile $userProfile
- * @var \open20\amos\een\models\EenExprOfInterest $model
+ * @var \open20\amos\core\record\Record $model
  * @var string $validationRequestTime
  * @var string $labelKey
  */
@@ -36,18 +36,17 @@ use open20\amos\myactivities\AmosMyActivities;
         <strong><?= $labelKey ?></strong>
     </div>
     <div class="col-lg-12 col-xs-12">
-        <?= Yii::$app->formatter->asDatetime($validationRequestTime) ?>
+        <?= Yii::$app->formatter->asDatetime($requestTime) ?>
     </div>
     <div class="col-lg-12 col-xs-12">
-        <p class="user-report"><?= $userProfile->getNomeCognome() ?></p>
-        <?= AmosMyActivities::t('amosmyactivities', ' asks validation for:'); ?>
-        <?php /** @var \open20\amos\core\interfaces\ContentModelInterface $model */ ?>
-        <?= $model->getTitle() ?>
+        <?= AmosMyActivities::t('amosmyactivities', ' asks connection for:'); ?>
+        <?php /** @var \open20\amos\core\interfaces\ContentModelInterface $model */ ?><br>
+        <?= $model->getSearchString() ?>
     </div>
     <div class="col-lg-12 col-xs-12">
         <?php /** @var \open20\amos\core\interfaces\ViewModelInterface $model */ ?>
         <?= Html::a(AmosIcons::show('search', [], 'dash') . ' <span>' . AmosMyActivities::t('amosmyactivities',
-                'View card') . '</span>', ['/een/een-partnership-proposal/view', 'id' => $model->een_partnership_proposal_id]
+                'View card') . '</span>', $model->getFullViewUrl()
 //            Yii::$app->urlManager->createUrl([
 //                '/community/community/view',
 //                'id' => $model->id

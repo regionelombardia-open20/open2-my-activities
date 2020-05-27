@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\partnershipprofiles\models\ExpressionsOfInterest;
-use lispa\amos\partnershipprofiles\models\search\ExpressionsOfInterestSearch;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\partnershipprofiles\models\ExpressionsOfInterest;
+use open20\amos\partnershipprofiles\models\search\ExpressionsOfInterestSearch;
 
 /**
  * Class ExpressionOfInterestToEvaluate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class ExpressionOfInterestToEvaluate extends ExpressionsOfInterestSearch implements MyActivitiesModelsInterface
 {
@@ -65,5 +65,13 @@ class ExpressionOfInterestToEvaluate extends ExpressionsOfInterestSearch impleme
     public function getWrappedObject()
     {
         return ExpressionsOfInterest::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'partnershipprofiles/expressions-of-interest/view';
     }
 }

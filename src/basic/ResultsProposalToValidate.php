@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
 use amos\results\models\ResultProposal;
 use amos\results\models\search\ResultProposalSearch;
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class ResultsProposalToValidate
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class ResultsProposalToValidate extends ResultProposalSearch implements MyActivitiesModelsInterface
 {
@@ -65,5 +65,13 @@ class ResultsProposalToValidate extends ResultProposalSearch implements MyActivi
     public function getWrappedObject()
     {
         return ResultProposal::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'results/result-proposal/view';
     }
 }

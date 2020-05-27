@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\basic
+ * @package    open20\amos\myactivities\basic
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\basic;
+namespace open20\amos\myactivities\basic;
 
-use lispa\amos\admin\models\UserContact;
-use lispa\amos\admin\models\UserProfile;
+use open20\amos\admin\models\UserContact;
+use open20\amos\admin\models\UserProfile;
 
 /**
  * Class WaitingContacts
- * @package lispa\amos\myactivities\basic
+ * @package open20\amos\myactivities\basic
  */
 class WaitingContacts extends UserContact implements MyActivitiesModelsInterface
 {
@@ -31,6 +31,7 @@ class WaitingContacts extends UserContact implements MyActivitiesModelsInterface
         if (!empty($userProfile)) {
             return $userProfile->getNomeCognome();
         }
+        
         return '';
     }
 
@@ -61,9 +62,14 @@ class WaitingContacts extends UserContact implements MyActivitiesModelsInterface
         if (!empty($userProfile)) {
             return $userProfile->getNomeCognome();
         }
+        
         return '';
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getWrappedObject()
     {
         return UserContact::findOne($this->id);

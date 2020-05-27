@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\widgets
+ * @package    open20\amos\myactivities\widgets
  * @category   CategoryName
  */
 
-namespace lispa\amos\myactivities\widgets;
+namespace open20\amos\myactivities\widgets;
 
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\core\record\Record;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\core\record\Record;
 
 /**
  * Class ExpressionOfInterestToTakeover
- * @package lispa\amos\myactivities\widgets
+ * @package open20\amos\myactivities\widgets
  */
 class ExpressionOfInterestToTakeover extends \yii\base\Widget
 {

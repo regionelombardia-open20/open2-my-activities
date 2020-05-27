@@ -1,19 +1,28 @@
 <?php
 
+/**
+ * Aria S.p.A.
+ * OPEN 2.0
+ *
+ *
+ * @package    Open20Package
+ * @category   CategoryName
+ */
+
 use yii\db\Migration;
 
 class m170728_110411_create_intro_slideshow extends Migration
 {
     public function safeUp()
     {
-        if (class_exists('\lispa\amos\slideshow\models\Slideshow')) {
+        if (class_exists('\open20\amos\slideshow\models\Slideshow')) {
             if (($this->db->schema->getTableSchema('slideshow', true) != null) &&
                 ($this->db->schema->getTableSchema('slideshow_route', true) != null) &&
                 ($this->db->schema->getTableSchema('slideshow_pages', true) != null)) {
 
                 $arraySlideshow = ['name' => 'Title My Activities', 'label' => 'LABEL', 'description' => 'DESCRIPTION'];
                 $this->insert('slideshow', $arraySlideshow);
-                $slideShow = \lispa\amos\slideshow\models\Slideshow::find()->andWhere($arraySlideshow)->one();
+                $slideShow = \open20\amos\slideshow\models\Slideshow::find()->andWhere($arraySlideshow)->one();
                 if (!empty($slideShow)) {
                     $this->insert('slideshow_route', [
                         'route' => '/myactivities/my-activities/index',
@@ -42,12 +51,12 @@ class m170728_110411_create_intro_slideshow extends Migration
 
     public function safeDown()
     {
-        if (class_exists('\lispa\amos\slideshow\models\Slideshow')) {
+        if (class_exists('\open20\amos\slideshow\models\Slideshow')) {
             if (($this->db->schema->getTableSchema('slideshow', true) != null) &&
                 ($this->db->schema->getTableSchema('slideshow_route', true) != null) &&
                 ($this->db->schema->getTableSchema('slideshow_pages', true) != null)) {
                 $arraySlideshow = ['name' => 'Title My Activities', 'label' => 'LABEL', 'description' => 'DESCRIPTION'];
-                $slideShow = \lispa\amos\slideshow\models\Slideshow::find()->andWhere($arraySlideshow)->one();
+                $slideShow = \open20\amos\slideshow\models\Slideshow::find()->andWhere($arraySlideshow)->one();
                 if (!empty($slideShow)) {
                     $this->delete('slideshow_route', ['slideshow_id' => $slideShow->id]);
                     $this->delete('slideshow_pages', ['slideshow_id' => $slideShow->id]);

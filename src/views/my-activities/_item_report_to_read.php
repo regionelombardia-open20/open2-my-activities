@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\admin\AmosAdmin;
-use lispa\amos\admin\models\UserProfile;
-use lispa\amos\admin\widgets\UserCardWidget;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
+use open20\amos\admin\models\UserProfile;
+use open20\amos\admin\widgets\UserCardWidget;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\ReportToRead */
+/** @var $model \open20\amos\myactivities\basic\ReportToRead */
 
 $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])->one();
 ?>
@@ -46,7 +46,7 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])-
             <div class="col-lg-12 col-xs-12">
                 <?php
                 $url = null;
-                if (Yii::$app->hasModule('news') && ($model->classname == \lispa\amos\news\models\News::className())) {
+                if (Yii::$app->hasModule('news') && ($model->classname == \open20\amos\news\models\News::className())) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/news/news/update',
                         'id' => $model->context_id,
@@ -54,7 +54,7 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])-
                     ]);
                 }
 
-                if (Yii::$app->hasModule('discussioni') && ($model->classname == \lispa\amos\discussioni\models\DiscussioniTopic::className())) {
+                if (Yii::$app->hasModule('discussioni') && ($model->classname == \open20\amos\discussioni\models\DiscussioniTopic::className())) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/discussioni/discussioni-topic/update',
                         'id' => $model->context_id,
@@ -62,7 +62,7 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])-
                     ]);
                 }
 
-                if (Yii::$app->hasModule('documenti') && ($model->classname == \lispa\amos\documenti\models\Documenti::className())) {
+                if (Yii::$app->hasModule('documenti') && ($model->classname == \open20\amos\documenti\models\Documenti::className())) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/documenti/documenti/update',
                         'id' => $model->context_id,

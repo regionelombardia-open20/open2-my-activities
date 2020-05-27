@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Lombardia Informatica S.p.A.
+ * Aria S.p.A.
  * OPEN 2.0
  *
  *
- * @package    lispa\amos\myactivities\views\my-activities
+ * @package    open20\amos\myactivities\views\my-activities
  * @category   CategoryName
  */
 
-use lispa\amos\admin\AmosAdmin;
-use lispa\amos\admin\widgets\UserCardWidget;
-use lispa\amos\core\helpers\Html;
-use lispa\amos\core\icons\AmosIcons;
-use lispa\amos\core\utilities\ModalUtility;
-use lispa\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
+use open20\amos\admin\widgets\UserCardWidget;
+use open20\amos\core\helpers\Html;
+use open20\amos\core\icons\AmosIcons;
+use open20\amos\core\utilities\ModalUtility;
+use open20\amos\myactivities\AmosMyActivities;
 
-/** @var $model \lispa\amos\myactivities\basic\WaitingContacts */
+/** @var $model \open20\amos\myactivities\basic\WaitingContacts */
 
 ?>
 <div class="wrap-activity">
@@ -40,7 +40,7 @@ use lispa\amos\myactivities\AmosMyActivities;
             <?= AmosMyActivities::t('amosmyactivities', '#message') . ': ' ?><?= $model->userProfileReactivationRequest->message ?>
         </div>
         <div class="col-lg-12 col-xs-12">
-            <?php /** @var \lispa\amos\core\interfaces\ViewModelInterface $model */ ?>
+            <?php /** @var \open20\amos\core\interfaces\ViewModelInterface $model */ ?>
             <?= Html::a(AmosIcons::show('search', [], 'dash') . ' <span>' . AmosMyActivities::t('amosmyactivities',
                     'View card') . '</span>', $model->getFullViewUrl()
 //            Yii::$app->urlManager->createUrl([
