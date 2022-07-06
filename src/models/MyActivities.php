@@ -12,21 +12,23 @@ namespace open20\amos\myactivities\models;
 
 use open20\amos\admin\AmosAdmin;
 use open20\amos\admin\models\base\UserProfile;
+use open20\amos\admin\models\base\UserProfileValidationNotify;
 use open20\amos\admin\models\UserContact;
 use open20\amos\core\user\User;
 use open20\amos\myactivities\AmosMyActivities;
 use open20\amos\myactivities\basic\CommunityToValidate;
 use open20\amos\myactivities\basic\DiscussionToValidate;
 use open20\amos\myactivities\basic\DocumentToValidate;
-use open20\amos\myactivities\basic\InnovativeSolutionToValidate;
 use open20\amos\myactivities\basic\EenExpressionOfInterestToTakeover;
 use open20\amos\myactivities\basic\EventToValidate;
 use open20\amos\myactivities\basic\ExpressionOfInterestToEvaluate;
+use open20\amos\myactivities\basic\InnovativeSolutionToValidate;
 use open20\amos\myactivities\basic\MyActivitiesList;
 use open20\amos\myactivities\basic\NewsToValidate;
-use open20\amos\myactivities\basic\ProfiloToValidate;
 use open20\amos\myactivities\basic\OrganizationsToValidate;
 use open20\amos\myactivities\basic\PartnershipProfileToValidate;
+use open20\amos\myactivities\basic\ProfileValidationNotifyToRead;
+use open20\amos\myactivities\basic\ProfiloToValidate;
 use open20\amos\myactivities\basic\ReportToRead;
 use open20\amos\myactivities\basic\RequestExternalFacilitator;
 use open20\amos\myactivities\basic\RequestToJoinOrganizzazioniForEmployees;
@@ -153,6 +155,7 @@ class MyActivities extends Model
 
         $this->myActivitiesList->addModelSet($this->getRequestToParticipateCommunityForManager());
         $this->myActivitiesList->addModelSet($this->getReportToRead());
+        $this->myActivitiesList->addModelSet($this->getProfileValidationNotifyToRead());
         $this->myActivitiesList->addModelSet($this->getRequestToJoinOrganizzazioniForReferees());
         $this->myActivitiesList->addModelSet($this->getRequestToJoinOrganizzazioniSediForReferees());
         $this->myActivitiesList->addModelSet($this->getRequestToJoinOrganizzazioniForEmployees());
@@ -743,6 +746,11 @@ class MyActivities extends Model
         }
 
         return [];
+    }
+    
+    public function getProfileValidationNotifyToRead()
+    {
+        return ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->all();
     }
 
     /**

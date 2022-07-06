@@ -16,6 +16,7 @@ use open20\amos\admin\AmosAdmin;
 
 /** @var $model \open20\amos\myactivities\basic\WaitingContacts */
 
+
 ?>
 <div class="wrap-activity">
     <div class="col-md-1 col-xs-2 icon-plugin">

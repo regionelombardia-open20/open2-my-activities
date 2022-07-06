@@ -142,6 +142,12 @@ if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
     }
 }
 
+if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
+    if ($model instanceof \open20\amos\myactivities\basic\ProfileValidationNotifyToRead) {
+        echo $this->render('_item_profile_validation_notify_to_read', ['model' => $model]);
+    }
+}
+
 if (Yii::$app->hasModule('organizzazioni')) {
     if ($model instanceof \open20\amos\myactivities\basic\RequestToJoinOrganizzazioniForReferees) {
         echo $this->render('_item_request_to_join_organizzazioni_for_referees', ['model' => $model]);
