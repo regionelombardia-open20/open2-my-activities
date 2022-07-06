@@ -549,7 +549,7 @@ class MyActivities extends Model
         if (!is_null($organizzazioniModule)
             && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests')
             && $organizzazioniModule->enableConfirmUsersJoinRequests
-            && defined('RequestToJoinOrganizzazioniForEmployees::STATUS_WAITING_OK_USER')
+            && defined(RequestToJoinOrganizzazioniForEmployees::className() . '::STATUS_WAITING_OK_USER')
         ) {
             /** @var UserProfile $userProfileModel */
             $userProfileModel = AmosAdmin::instance()->createModel('UserProfile');
