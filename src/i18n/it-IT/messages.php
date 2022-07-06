@@ -76,4 +76,5 @@ return [
     'View card' => 'Vedi scheda',
     '#view_organization' => 'Vedi organizzazione',
     'View profile' => 'Vedi profilo',
+    'Folder Validation' => 'Validazione Cartella'
 ];

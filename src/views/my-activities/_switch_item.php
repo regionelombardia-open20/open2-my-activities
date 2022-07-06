@@ -142,3 +142,9 @@ if (Yii::$app->hasModule('organizzazioni')) {
         echo $this->render('_item_request_to_join_organizzazioni_for_employees', ['model' => $model]);
     }
 }
+
+if (Yii::$app->hasModule('landing')) {
+    if ($model instanceof \open20\amos\myactivities\basic\TerritoryToValidate) {
+        echo $this->render('_item_territory_to_validate', ['model' => $model]);
+    }
+}

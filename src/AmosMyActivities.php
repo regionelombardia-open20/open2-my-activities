@@ -68,6 +68,8 @@ class AmosMyActivities extends AmosModule
     protected function getDefaultModels()
     {
         return [
+            'MyActivities' => __NAMESPACE__ . '\\' . 'models\MyActivities',
+            'MyActivitiesModelSearch' => __NAMESPACE__ . '\\' . 'models\search\MyActivitiesModelSearch',
         ];
     }
 }

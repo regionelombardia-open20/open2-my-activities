@@ -30,13 +30,15 @@ $profilo = $model->profilo;
     ?>
     <div class="wrap-activity">
         <div class="col-md-1 col-xs-2 icon-plugin">
-            <?= AmosIcons::show('users', [], 'dash') ?>
+            <?= AmosIcons::show('building', [], 'dash') ?>
         </div>
         <div class="col-md-3 col-xs-5 wrap-user">
             <?= UserCardWidget::widget(['model' => $userProfile]) ?>
             <span class="user"><?= $nomeCognome ?></span>
             <br>
-            <?= AmosAdmin::t('amosadmin', $userProfile->workflowStatus->label) ?>
+            <?php if (!AmosAdmin::instance()->bypassWorkflow): ?>
+                <?= AmosAdmin::t('amosadmin', $userProfile->workflowStatus->label) ?>
+            <?php endif; ?>
         </div>
         <div class="col-md-5 col-xs-5 wrap-report">
             <div class="col-lg-12 col-xs-12">

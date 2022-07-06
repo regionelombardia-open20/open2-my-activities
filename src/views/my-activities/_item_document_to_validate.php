@@ -20,9 +20,13 @@ use open20\amos\myactivities\AmosMyActivities;
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('file-text-o', [], 'dash') ?>
     </div>
+    <?php $labelKey = AmosMyActivities::t('amosmyactivities', 'Document Validation');
+    if($model->is_folder){
+        $labelKey = AmosMyActivities::t('amosmyactivities', 'Folder Validation');
+    }?>
     <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
         'model' => $model,
-        'labelKey' => AmosMyActivities::t('amosmyactivities', 'Document Validation'),
+        'labelKey' => $labelKey,
     ]) ?>
     <div class="col-md-3 col-xs-12 wrap-action">
         <?php

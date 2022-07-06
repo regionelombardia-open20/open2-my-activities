@@ -40,12 +40,19 @@ class MyActivitiesController extends CrudController
     public $layout = 'list';
 
     /**
+     * @var AmosMyActivities $myActivitiesModule
+     */
+    public $myActivitiesModule = null;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->setModelObj(new MyActivities());
-        $this->setModelSearch(new MyActivities());
+        $this->myActivitiesModule = \Yii::$app->getModule(AmosMyActivities::getModuleName());
+
+        $this->setModelObj($this->myActivitiesModule->createModel('MyActivities'));
+        $this->setModelSearch($this->myActivitiesModule->createModel('MyActivities'));
 
         $this->setAvailableViews([
             'list' => [
@@ -105,7 +112,8 @@ class MyActivitiesController extends CrudController
         $modelSearch = new MyActivitiesModelSearch;
         $modelSearch->load(\Yii::$app->request->getQueryParams());
 
-        $model = new MyActivities();
+        /** @var MyActivities $model */
+        $model = $this->myActivitiesModule->createModel('MyActivities');
         $listOfActivities = $model->getMyActivities($modelSearch);
         
         $dataProvider = new ArrayDataProvider();

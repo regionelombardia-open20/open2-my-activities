@@ -13,6 +13,7 @@ namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
 use open20\amos\documenti\models\Documenti;
+use yii\helpers\Url;
 
 /**
  * Class DocumentToValidate
@@ -72,6 +73,20 @@ class DocumentToValidate extends \open20\amos\documenti\models\search\DocumentiS
      */
     public function getViewUrl()
     {
+        if($this->is_folder){
+            return 'documenti/documenti/to-validate-documents';
+        }
         return 'documenti/documenti/view';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getFullViewUrl()
+    {
+        if($this->is_folder){
+            return Url::toRoute(["/" . $this->getViewUrl(), "parentId" => $this->id]);
+        }
+        return Url::toRoute(["/" . $this->getViewUrl(), "id" => $this->id]);
     }
 }

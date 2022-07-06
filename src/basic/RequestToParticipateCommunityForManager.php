@@ -15,7 +15,6 @@ use open20\amos\admin\models\UserProfile;
 
 /**
  * Class RequestToParticipateCommunityForManager
- * @see \open20\amos\community\models\Community
  * @package open20\amos\myactivities\basic
  */
 class RequestToParticipateCommunityForManager extends \open20\amos\community\models\CommunityUserMm implements MyActivitiesModelsInterface

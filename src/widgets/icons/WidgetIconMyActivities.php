@@ -12,10 +12,8 @@
 namespace open20\amos\myactivities\widgets\icons;
 
 use open20\amos\core\widget\WidgetIcon;
-
 use open20\amos\myactivities\AmosMyActivities;
 use open20\amos\myactivities\models\MyActivities;
-
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -25,7 +23,6 @@ use yii\helpers\ArrayHelper;
  */
 class WidgetIconMyActivities extends WidgetIcon
 {
-
     /**
      * @inheritdoc
      */
@@ -57,13 +54,16 @@ class WidgetIconMyActivities extends WidgetIcon
     }
 
     /**
-     * 
-     * @param type $user_id
-     * @return type
+     * @param null $userId
+     * @param null $className
+     * @param null $externalQuery
+     * @return bool|int|mixed
+     * @throws \yii\base\InvalidConfigException
      */
     public function makeBulletCounter($userId = null, $className = null, $externalQuery = null)
     {
-        return MyActivities::getCountActivities(true);
+        /** @var MyActivities $model */
+        $model = AmosMyActivities::instance()->createModel('MyActivities');
+        return $model::getCountActivities(true);
     }
-
 }

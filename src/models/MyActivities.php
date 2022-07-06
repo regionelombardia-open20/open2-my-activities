@@ -37,6 +37,7 @@ use open20\amos\myactivities\basic\ResultsProposalToValidate;
 use open20\amos\myactivities\basic\ResultsToValidate;
 use open20\amos\myactivities\basic\ShowcaseProjectToValidate;
 use open20\amos\myactivities\basic\ShowcaseProjectUserToAccept;
+use open20\amos\myactivities\basic\TerritoryToValidate;
 use open20\amos\myactivities\basic\UserProfileActivationRequest;
 use open20\amos\myactivities\basic\UserProfileToValidate;
 use open20\amos\myactivities\basic\WaitingContacts;
@@ -58,17 +59,17 @@ class MyActivities extends Model
     /**
      * @var MyActivitiesList $myActivitiesList
      */
-    private $myActivitiesList;
+    protected $myActivitiesList;
 
     /**
      * @var array $queryParams
      */
-    private $queryParams;
+    protected $queryParams;
 
     /**
      * @var int $user_id
      */
-    private $user_id;
+    protected $user_id;
 
     /**
      * @var bool $countOnly
@@ -94,7 +95,8 @@ class MyActivities extends Model
     public static function getCountActivities($count = false)
     {
         self::$countOnly = $count;
-        $model = new MyActivities;
+        /** @var MyActivities $model */
+        $model = AmosMyActivities::instance()->createModel('MyActivities');
 
         $allMyActivities = $model->getMyActivities(null, false);
 
@@ -148,6 +150,8 @@ class MyActivities extends Model
         $this->myActivitiesList->addModelSet($this->getRequestToJoinOrganizzazioniSediForReferees());
         $this->myActivitiesList->addModelSet($this->getRequestToJoinOrganizzazioniForEmployees());
         $this->myActivitiesList->addModelSet($this->getRequestExternalFacilitator());
+        $this->myActivitiesList->addModelSet($this->getTerritoryToValidate($enableOrder));
+
 
         if (self::$countOnly == false) {
             $this->myActivitiesList->applySort($modelSearch);
@@ -161,7 +165,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getWaitingContacts()
+    protected function getWaitingContacts()
     {
         if (Yii::$app->hasModule('admin')) {
             /** @var ActiveQuery $query */
@@ -187,7 +191,7 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    private function getNewsToValidate($enableOrder)
+    protected function getNewsToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('news')) {
             $modelSearch = new NewsToValidate();
@@ -213,10 +217,40 @@ class MyActivities extends Model
     }
 
     /**
+     * @param bool $enableOrder
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    private function getRequestToParticipateCommunity()
+    protected function getTerritoryToValidate($enableOrder)
+    {
+        if (Yii::$app->hasModule('landing')) {
+            $modelSearch = new TerritoryToValidate();
+            /** @var ActiveDataProvider $dataProvider */
+            $dataProvider = $modelSearch->searchToValidate($this->queryParams);
+            if (!$enableOrder) {
+                $dataProvider->sort = false;
+            }
+            $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
+
+            /** @var ActiveQuery $query */
+            $query = TerritoryToValidate::find()
+                ->andWhere(['id' => $ids]);
+
+            if (self::$countOnly) {
+                return [TerritoryToValidate::className() => $query->asArray()->count()];
+            }
+
+            return $query->all();
+        }
+
+        return [];
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getRequestToParticipateCommunity()
     {
         if (Yii::$app->hasModule('community')) {
             /** @var ActiveQuery $query */
@@ -242,7 +276,7 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    private function getUserProfileToValidate()
+    protected function getUserProfileToValidate()
     {
         $moduleAdmin = Yii::$app->getModule('admin');
         if ($moduleAdmin) {
@@ -280,7 +314,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getUserProfileActivationRequest()
+    protected function getUserProfileActivationRequest()
     {
         if (Yii::$app->hasModule('admin')) {
             if (Yii::$app->user->can('ADMIN')) {
@@ -305,7 +339,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getComunityToValidate($enableOrder)
+    protected function getComunityToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('community')) {
             $communitySearch = new CommunityToValidate;
@@ -334,7 +368,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getDiscussionToValidate($enableOrder)
+    protected function getDiscussionToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('discussioni')) {
             $modelSearch = new DiscussionToValidate;
@@ -368,7 +402,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getDocumentToValidate($enableOrder)
+    protected function getDocumentToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('documenti')) {
             $modelSearch = new DocumentToValidate();
@@ -397,7 +431,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getEventsToValidate($enableOrder)
+    protected function getEventsToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('events')) {
             $modelSearch = new EventToValidate();
@@ -427,7 +461,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getOrganizationsToValidate($enableOrder)
+    protected function getOrganizationsToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('organizations')) {
             $modelSearch = new OrganizationsToValidate();
@@ -464,7 +498,7 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    private function getRequestToJoinOrganizzazioniForReferees()
+    protected function getRequestToJoinOrganizzazioniForReferees()
     {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
@@ -508,13 +542,14 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    private function getRequestToJoinOrganizzazioniForEmployees()
+    protected function getRequestToJoinOrganizzazioniForEmployees()
     {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
         if (!is_null($organizzazioniModule)
             && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests')
             && $organizzazioniModule->enableConfirmUsersJoinRequests
+            && defined('RequestToJoinOrganizzazioniForEmployees::STATUS_WAITING_OK_USER')
         ) {
             /** @var UserProfile $userProfileModel */
             $userProfileModel = AmosAdmin::instance()->createModel('UserProfile');
@@ -547,7 +582,7 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    private function getRequestToJoinOrganizzazioniSediForReferees()
+    protected function getRequestToJoinOrganizzazioniSediForReferees()
     {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
@@ -593,7 +628,7 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    private function getEenExpressionOfInterestToTakeover($enableOrder)
+    protected function getEenExpressionOfInterestToTakeover($enableOrder)
     {
         if (Yii::$app->hasModule('een')) {
             $modelSearch = new EenExpressionOfInterestToTakeover();
@@ -621,7 +656,7 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    private function getRequestToParticipateCommunityForManager()
+    protected function getRequestToParticipateCommunityForManager()
     {
 
         if (Yii::$app->hasModule('community')) {
@@ -655,7 +690,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getReportToRead()
+    protected function getReportToRead()
     {
         if (Yii::$app->hasModule('report')) {
             $reportMyInterest = [];
@@ -806,7 +841,7 @@ class MyActivities extends Model
      * TODO Not yet terminated
      * @return array
      */
-    private function getSurveyToValidate()
+    protected function getSurveyToValidate()
     {
         if (Yii::$app->hasModule('sondaggi')) {
             return []; // SurveyToValidate::find()->all();
@@ -820,7 +855,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getShowcaseProjectToValidate($enableOrder)
+    protected function getShowcaseProjectToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('showcaseprojects')) {
             $modelSearch = new ShowcaseProjectToValidate();
@@ -849,7 +884,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getShowcaseProjectUserToAccept($enableOrder)
+    protected function getShowcaseProjectUserToAccept($enableOrder)
     {
         if (Yii::$app->hasModule('showcaseprojects')) {
             $modelSearch = new ShowcaseProjectUserToAccept();
@@ -876,7 +911,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getResultsToValidate($enableOrder)
+    protected function getResultsToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('results')) {
             $modelSearch = new ResultsToValidate();
@@ -905,7 +940,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getProposalResultsToValidate($enableOrder)
+    protected function getProposalResultsToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('results')) {
             $modelSearch = new ResultsProposalToValidate();
@@ -935,7 +970,7 @@ class MyActivities extends Model
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function getPartnershipProfilesToValidate($enableOrder)
+    protected function getPartnershipProfilesToValidate($enableOrder)
     {
         if (Yii::$app->hasModule('partnershipprofiles')) {
             $modelSearch = new PartnershipProfileToValidate();
@@ -965,7 +1000,7 @@ class MyActivities extends Model
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    private function getRequestExternalFacilitator()
+    protected function getRequestExternalFacilitator()
     {
         if (Yii::$app->hasModule('admin')) {
             $modelSearch = new RequestExternalFacilitator();
@@ -989,7 +1024,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    private function getExpressionOfInterestToEvaluate()
+    protected function getExpressionOfInterestToEvaluate()
     {
         if (Yii::$app->hasModule('partnershipprofiles')) {
             $modelSearch = new ExpressionOfInterestToEvaluate();

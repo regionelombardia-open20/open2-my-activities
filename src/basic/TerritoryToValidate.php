@@ -12,19 +12,21 @@
 namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
+use openinnovation\landing\models\search\TerritorySearch;
+use openinnovation\landing\models\Territory;
 
 /**
- * Class ReportToRead
+ * Class TerritoryToValidate
  * @package open20\amos\myactivities\basic
  */
-class ReportToRead extends \open20\amos\report\models\Report implements MyActivitiesModelsInterface
+class TerritoryToValidate extends TerritorySearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return $this->content;
+        return $this->title;
     }
 
     /**
@@ -58,10 +60,18 @@ class ReportToRead extends \open20\amos\report\models\Report implements MyActivi
     }
 
     /**
-     * @return \open20\amos\report\models\Report
+     * @return Territory
      */
     public function getWrappedObject()
     {
-        return \open20\amos\report\models\Report::findOne($this->id);
+        return Territory::findOne($this->id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewUrl()
+    {
+        return 'landing/territory/view';
     }
 }
