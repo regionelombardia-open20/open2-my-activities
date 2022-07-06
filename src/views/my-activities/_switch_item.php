@@ -9,12 +9,14 @@
  * @category   CategoryName
  */
 
+use open20\amos\admin\AmosAdmin;
+
 /**
  * @var yii\web\View $this
  * @var \open20\amos\core\record\Record $model
  */
 
-if (Yii::$app->hasModule('admin')) {
+if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
     if ($model instanceof \open20\amos\myactivities\basic\WaitingContacts) {
         echo $this->render('_item_waiting_contacts', ['model' => $model]);
     }
@@ -26,7 +28,7 @@ if (Yii::$app->hasModule('community')) {
     }
 }
 
-if (Yii::$app->hasModule('admin')) {
+if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
     if ($model instanceof \open20\amos\myactivities\basic\UserProfileToValidate) {
         echo $this->render('_item_user_profile_to_validate', ['model' => $model]);
     }
@@ -81,6 +83,9 @@ if (Yii::$app->hasModule('showcaseprojects')) {
     if ($model instanceof \open20\amos\myactivities\basic\ShowcaseProjectUserToAccept) {
         echo $this->render('_item_showcase_project_user_to_accept', ['model' => $model]);
     }
+    if ($model instanceof \open20\amos\myactivities\basic\ShowcaseProjectProposalToValidate) {
+        echo $this->render('_item_showcase_project_proposal_to_validate', ['model' => $model]);
+    }
 }
 
 if (Yii::$app->hasModule('results')) {
@@ -131,7 +136,7 @@ if (Yii::$app->hasModule('een')) {
     }
 }
 
-if (Yii::$app->hasModule('admin')) {
+if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
     if ($model instanceof \open20\amos\myactivities\basic\UserProfileActivationRequest) {
         echo $this->render('_item_user_profile_activation_request', ['model' => $model]);
     }
@@ -152,5 +157,11 @@ if (Yii::$app->hasModule('organizzazioni')) {
 if (Yii::$app->hasModule('landing')) {
     if ($model instanceof \open20\amos\myactivities\basic\TerritoryToValidate) {
         echo $this->render('_item_territory_to_validate', ['model' => $model]);
+    }
+}
+
+if (Yii::$app->hasModule('innovativesolutions')) {
+    if ($model instanceof \open20\amos\myactivities\basic\InnovativeSolutionToValidate) {
+        echo $this->render('_item_innovative_solution_to_validate', ['model' => $model]);
     }
 }

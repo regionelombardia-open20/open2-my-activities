@@ -7,7 +7,7 @@
   "proscription": "BSD-3-Clause",
   "require": {
     "php": ">=5.4.0",
-    "open20/amos-core":"^1.9.60",
+    "open20/amos-core":"^1.15.0",
     "open20/amos-admin": "^2.2.0.",
     "open20/amos-notify": "^1.4",
     "open20/amos-workflow": "*"

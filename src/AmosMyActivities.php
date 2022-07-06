@@ -23,7 +23,7 @@ class AmosMyActivities extends AmosModule
     public $controllerNamespace = 'open20\amos\myactivities\controllers';
     public $name = 'MYACTIVITIES';
     
-    public $orderType = 'SORT_ASC';
+    public $orderType = SORT_DESC;
 
 
     /**

@@ -12,6 +12,7 @@
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\core\utilities\ModalUtility;
 use open20\amos\myactivities\AmosMyActivities;
+use open20\amos\admin\AmosAdmin;
 
 /** @var $model \open20\amos\myactivities\basic\WaitingContacts */
 
@@ -30,7 +31,7 @@ use open20\amos\myactivities\AmosMyActivities;
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#VALIDATE_USER_PROFILE_MODAL_TEXT'),
             'btnText' => AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/admin/user-profile/validate-user-profile',
+                '/'. AmosAdmin::getModuleName() . '/user-profile/validate-user-profile',
                 'id' => $model->id
             ]),
             'btnOptions' => [
@@ -42,7 +43,7 @@ use open20\amos\myactivities\AmosMyActivities;
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#REJECT_USER_PROFILE_MODAL_TEXT'),
             'btnText' => AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/admin/user-profile/reject-user-profile',
+                '/'. AmosAdmin::getModuleName() . '/user-profile/reject-user-profile',
                 'id' => $model->id
             ]),
             'btnOptions' => [

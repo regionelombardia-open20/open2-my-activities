@@ -23,7 +23,7 @@ ModuleMyActivitiesAsset::register($this);
  * @var array $parametro
  */
 
-$this->title = AmosMyActivities::t('amosmyactivities', 'My activities');
+//$this->title = AmosMyActivities::t('amosmyactivities', 'My activities');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

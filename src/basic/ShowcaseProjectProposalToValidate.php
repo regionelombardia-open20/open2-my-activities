@@ -12,20 +12,23 @@
 namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
-use open20\amos\community\models\Community;
+use open20\amos\showcaseprojects\models\search\ShowcaseProjectProposalSearch;
+use open20\amos\showcaseprojects\models\search\ShowcaseProjectSearch;
+use open20\amos\showcaseprojects\models\ShowcaseProject;
+use open20\amos\showcaseprojects\models\ShowcaseProjectProposal;
 
 /**
- * Class CommunityToValidate
+ * Class ShowcaseProjectToValidate
  * @package open20\amos\myactivities\basic
  */
-class CommunityToValidate extends \open20\amos\community\models\search\CommunitySearch implements MyActivitiesModelsInterface
+class ShowcaseProjectProposalToValidate extends ShowcaseProjectProposalSearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -41,21 +44,7 @@ class CommunityToValidate extends \open20\amos\community\models\search\Community
      */
     public function getUpdatedAt()
     {
-        // Per le community va presa la data dell'ultima validazione!!!
-        $model = $this->getWrappedObject();
-        $dateTime =$model->getStatusLastUpdateTime($this->getToValidateStatus());
-        if (is_null($dateTime)) {
-            $dateTime = $this->updated_at;
-        }
-        return $dateTime;
-    }
-
-    /**
-     * @return Community
-     */
-    public function getWrappedObject()
-    {
-        return Community::findOne($this->id);
+        return $this->updated_at;
     }
 
     /**
@@ -73,10 +62,10 @@ class CommunityToValidate extends \open20\amos\community\models\search\Community
     }
 
     /**
-     * @inheritdoc
+     * @return ShowcaseProjectProposal
      */
-    public function getViewUrl()
+    public function getWrappedObject()
     {
-        return 'community/community/view';
+        return ShowcaseProjectProposal::findOne($this->id);
     }
 }

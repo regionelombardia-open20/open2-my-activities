@@ -63,7 +63,7 @@ class MyActivitiesController extends CrudController
         ]);
 
         parent::init();
-        
+
         $this->setUpLayout();
     }
 
@@ -72,26 +72,53 @@ class MyActivitiesController extends CrudController
      */
     public function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => [
-                            'index',
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => [
+                                'index',
+                            ],
+                            'roles' => ['ADMIN', 'VALIDATED_BASIC_USER']
                         ],
-                        'roles' => ['ADMIN', 'VALIDATED_BASIC_USER']
-                    ],
-                ]
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post', 'get']
+                    ]
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['post', 'get']
+                    ]
                 ]
             ]
-        ]);
+        );
+    }
+
+    public function beforeAction($action)
+    {
+
+        $titleSection = AmosMyActivities::t('amosmyactivities', 'Le mie attività');
+        $subTitleSection = Html::tag('p', AmosMyActivities::t('amosmyactivities', ''));
+
+        $this->view->params = [
+            'isGuest' => \Yii::$app->user->isGuest,
+            'modelLabel' => 'myactivities',
+            'titleSection' => $titleSection,
+            'subTitleSection' => $subTitleSection,
+            'hideCreate' => true,
+            'hideManage' => true
+        ];
+
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // other custom code here
+
+        return true;
     }
 
     /**
@@ -105,7 +132,7 @@ class MyActivitiesController extends CrudController
         if (isset($moduleCwh)) {
             $moduleCwh->resetCwhScopeInSession();
         }
-        
+
         Url::remember();
         $this->setUpLayout('list');
 
@@ -113,9 +140,20 @@ class MyActivitiesController extends CrudController
         $modelSearch->load(\Yii::$app->request->getQueryParams());
 
         /** @var MyActivities $model */
-        $model = $this->myActivitiesModule->createModel('MyActivities');
+        $model            = $this->myActivitiesModule->createModel('MyActivities');
         $listOfActivities = $model->getMyActivities($modelSearch);
-        
+
+        if (class_exists('open20\\amos\\utility\\drivers\\bcDriverMyActivities')) {
+            // TBD, update counter for widget
+            \open20\amos\utility\drivers\bcDriverMyActivities::updateBulletCountersTable(
+                \Yii::$app->getUser()->getId(),
+                AmosMyActivities::getModuleName(),
+                'open20\amos\myactivities\widgets\icons\WidgetIconMyActivities',
+                count($listOfActivities),
+                true
+            );
+        }
+
         $dataProvider = new ArrayDataProvider();
         if (count($listOfActivities) > 0) {
             $dataProvider->setModels($listOfActivities);
@@ -128,6 +166,8 @@ class MyActivitiesController extends CrudController
 
         $this->setModelSearch($modelSearch);
         
+        $this->view->title = AmosMyActivities::t('amosmyactivities', 'My activities');
+
         return parent::actionIndex();
     }
 }

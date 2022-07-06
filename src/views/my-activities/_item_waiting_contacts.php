@@ -46,7 +46,7 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->user_id])->on
                 <?= Html::a(AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('amosmyactivities',
                         'View profile'),
                     Yii::$app->urlManager->createUrl([
-                        '/admin/user-profile/view',
+                        '/'. AmosAdmin::getModuleName() . '/user-profile/view',
                         'id' => $userProfile->id
                     ])
                 ) ?>

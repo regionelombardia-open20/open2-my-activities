@@ -12,20 +12,23 @@
 namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
-use open20\amos\community\models\Community;
+use openinnovation\innovative\solutions\models\search\InnovativeSolutionSearch;
+use openinnovation\innovative\solutions\models\InnovativeSolution;
+
+use openinnovation\landing\models\Territory;
 
 /**
- * Class CommunityToValidate
+ * Class TerritoryToValidate
  * @package open20\amos\myactivities\basic
  */
-class CommunityToValidate extends \open20\amos\community\models\search\CommunitySearch implements MyActivitiesModelsInterface
+class innovativeSolutionToValidate extends InnovativeSolutionSearch implements MyActivitiesModelsInterface
 {
     /**
      * @return string
      */
     public function getSearchString()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -41,21 +44,7 @@ class CommunityToValidate extends \open20\amos\community\models\search\Community
      */
     public function getUpdatedAt()
     {
-        // Per le community va presa la data dell'ultima validazione!!!
-        $model = $this->getWrappedObject();
-        $dateTime =$model->getStatusLastUpdateTime($this->getToValidateStatus());
-        if (is_null($dateTime)) {
-            $dateTime = $this->updated_at;
-        }
-        return $dateTime;
-    }
-
-    /**
-     * @return Community
-     */
-    public function getWrappedObject()
-    {
-        return Community::findOne($this->id);
+        return $this->updated_at;
     }
 
     /**
@@ -73,10 +62,18 @@ class CommunityToValidate extends \open20\amos\community\models\search\Community
     }
 
     /**
+     * @return Territory
+     */
+    public function getWrappedObject()
+    {
+        return InnovativeSolution::findOne($this->id);
+    }
+
+    /**
      * @inheritdoc
      */
     public function getViewUrl()
     {
-        return 'community/community/view';
+        return 'innovativesolutions/innovative-solution/view';
     }
 }

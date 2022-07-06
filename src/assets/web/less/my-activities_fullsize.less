@@ -7,9 +7,10 @@ IMPORT AMOS-LAYOUT VARIABLES
 IMPORT STYLE-CUSTOM
  */
 @import (optional) "../../backend/web/less/style_custom.less";
+@import (optional) "../../frontend/web/less/style_custom.less";
 
 .icon-plugin {
-  .dash {
+  .dash, .ic {
     display: inline-block;
   }
 }
@@ -66,7 +67,7 @@ IMPORT STYLE-CUSTOM
       background-color: #000000;
       padding: 15px 0;
       width: 55px;
-      color: #fff;
+      color: #fff !important;
       text-align: center;
       font-size: 25px;
     }

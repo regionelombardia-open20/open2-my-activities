@@ -56,7 +56,7 @@ use open20\amos\myactivities\AmosMyActivities;
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#ACTIVATE_USER_PROFILE'),
             'btnText' => AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Activate'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/admin/user-profile/reactivate-account',
+                '/'. AmosAdmin::getModuleName() . '/user-profile/reactivate-account',
                 'id' => $model->id
             ]),
             'btnOptions' => [
@@ -68,7 +68,7 @@ use open20\amos\myactivities\AmosMyActivities;
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#REJECT_USER_PROFILE_MODAL_TEXT'),
             'btnText' => AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/admin/user-profile/reject-reactivation-request',
+                '/'. AmosAdmin::getModuleName() . '/user-profile/reject-reactivation-request',
                 'id' => $model->id
             ]),
             'btnOptions' => [

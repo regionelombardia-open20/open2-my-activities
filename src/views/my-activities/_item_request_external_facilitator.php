@@ -48,15 +48,15 @@ $userProfile = UserProfile::find()->andWhere(['id' => $model->user_profile_id])-
                 <?= Html::a(AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('amosmyactivities',
                         'View card'),
                     Yii::$app->urlManager->createUrl([
-                        '/admin/user-profile/view',
+                        '/'. AmosAdmin::getModuleName() . '/user-profile/view',
                         'id' => $model->user_profile_id
                     ])
                 ) ?>
             </div>
         </div>
         <div class="col-md-3 col-xs-12 wrap-action">
-            <?= Html::a(AmosIcons::show('check').AmosMyActivities::t('amosmyactivities', 'Accept'), ['/admin/user-profile/accept-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-primary']) ?>
-            <?= Html::a(AmosIcons::show('close'). AmosMyActivities::t('amosmyactivities', 'Reject'),['/admin/user-profile/reject-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-secondary']) ?>
+            <?= Html::a(AmosIcons::show('check').AmosMyActivities::t('amosmyactivities', 'Accept'), [ '/'. AmosAdmin::getModuleName() . '/user-profile/accept-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-primary']) ?>
+            <?= Html::a(AmosIcons::show('close'). AmosMyActivities::t('amosmyactivities', 'Reject'),[ '/'. AmosAdmin::getModuleName() . '/user-profile/reject-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-secondary']) ?>
         </div>
     </div>
     <hr>
