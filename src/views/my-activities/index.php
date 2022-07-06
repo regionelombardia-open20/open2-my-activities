@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DataProviderView::widget([
         'dataProvider' => $dataProvider,
         'currentView' => $currentView,
+        'showPageSummary' => false,
         'listView' => [
             'itemView' => '_switch_item',
         ],
