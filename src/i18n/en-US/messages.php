@@ -34,6 +34,7 @@ return [
     '{listIcon}' => '{listIcon}',
     '#message' => 'Message',
     'My activities' => 'My activities',
+    '#organization_validation' => 'Organization validation',
     '#partnershipvalidation' => 'Partnership Profile to validate',
     'Reading confirmation' => 'Reading confirmation',
     'Read' => 'Read',

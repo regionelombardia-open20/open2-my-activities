@@ -38,6 +38,7 @@ return [
     '{listIcon}' => '{listIcon}',
     '#message' => 'Messaggio',
     'My activities' => 'Le mie attività',
+    '#organization_validation' => 'Validazione organizzazione',
     '#partnershipvalidation' => 'Proposte di collaborazione da validare',
     'Reading confirmation' => 'Conferma lettura',
     'Read' => 'Leggi',
@@ -76,5 +77,6 @@ return [
     'View card' => 'Vedi scheda',
     '#view_organization' => 'Vedi organizzazione',
     'View profile' => 'Vedi profilo',
-    'Folder Validation' => 'Validazione Cartella'
+    'Folder Validation' => 'Validazione Cartella',
+    'Validation profile' => 'Validazione organizzazione',
 ];

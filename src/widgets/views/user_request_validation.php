@@ -23,13 +23,18 @@ use open20\amos\myactivities\AmosMyActivities;
  * @var string $labelKey
  */
 
+/** @var AmosAdmin $adminModule */
+$adminModule = AmosAdmin::instance();
+
 ?>
 
 <div class="col-md-3 col-xs-5 wrap-user">
     <?= UserCardWidget::widget(['model' => $userProfile]) ?>
     <span class="user"><?= $userProfile->getNomeCognome() ?></span>
     <br>
-    <?= AmosAdmin::t('amosadmin', $userProfile->workflowStatus->label) ?>
+    <?php if (!$adminModule->bypassWorkflow): ?>
+        <?= AmosAdmin::t('amosadmin', $userProfile->workflowStatus->label) ?>
+    <?php endif; ?>
 </div>
 <div class="col-md-5 col-xs-5 wrap-report">
     <div class="col-lg-12 col-xs-12">

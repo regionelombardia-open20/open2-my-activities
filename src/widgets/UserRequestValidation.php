@@ -65,6 +65,9 @@ class UserRequestValidation extends Widget
             if (is_null($userId)) {
                 $userId = $model->created_by;
             }
+            if (is_null($userId)) {
+                $userId = $model->user_id;
+            }
             $validationRequestTime = $model->updated_at;
             if (is_null($validationRequestTime)) {
                 $validationRequestTime = $model->created_at;

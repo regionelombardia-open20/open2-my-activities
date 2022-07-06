@@ -38,6 +38,12 @@ if (Yii::$app->hasModule('community')) {
     }
 }
 
+if (Yii::$app->hasModule('organizzazioni')) {
+    if ($model instanceof \open20\amos\myactivities\basic\ProfiloToValidate) {
+        echo $this->render('_item_organizzazioni_to_validate', ['model' => $model]);
+    }
+}
+
 if (Yii::$app->hasModule('news')) {
     if ($model instanceof \open20\amos\myactivities\basic\NewsToValidate) {
         echo $this->render('_item_news_to_validate', ['model' => $model]);

@@ -24,6 +24,7 @@ use open20\amos\myactivities\basic\EventToValidate;
 use open20\amos\myactivities\basic\ExpressionOfInterestToEvaluate;
 use open20\amos\myactivities\basic\MyActivitiesList;
 use open20\amos\myactivities\basic\NewsToValidate;
+use open20\amos\myactivities\basic\ProfiloToValidate;
 use open20\amos\myactivities\basic\OrganizationsToValidate;
 use open20\amos\myactivities\basic\PartnershipProfileToValidate;
 use open20\amos\myactivities\basic\ReportToRead;
@@ -122,6 +123,7 @@ class MyActivities extends Model
 
         $this->myActivitiesList->addModelSet($this->getWaitingContacts());
         $this->myActivitiesList->addModelSet($this->getNewsToValidate($enableOrder));
+        $this->myActivitiesList->addModelSet($this->getProfiloToValidate($enableOrder));
         $this->myActivitiesList->addModelSet($this->getRequestToParticipateCommunity());
         $this->myActivitiesList->addModelSet($this->getUserProfileToValidate());
         $this->myActivitiesList->addModelSet($this->getComunityToValidate($enableOrder));
@@ -208,6 +210,36 @@ class MyActivities extends Model
 
             if (self::$countOnly) {
                 return [NewsToValidate::className() => $query->asArray()->count()];
+            }
+
+            return $query->all();
+        }
+
+        return [];
+    }
+    
+    /**
+     * @param bool $enableOrder
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getProfiloToValidate($enableOrder)
+    {
+        if (Yii::$app->hasModule('organizzazioni')) {
+            $modelSearch = new ProfiloToValidate();
+            /** @var ActiveDataProvider $dataProvider */
+            $dataProvider = $modelSearch->searchToValidateProfilo($this->queryParams);
+            if (!$enableOrder) {
+                $dataProvider->sort = false;
+            }
+            $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
+
+            /** @var ActiveQuery $query */
+            $query = ProfiloToValidate::find()
+                ->andWhere(['id' => $ids]);
+
+            if (self::$countOnly) {
+                return [ProfiloToValidate::className() => $query->asArray()->count()];
             }
 
             return $query->all();
