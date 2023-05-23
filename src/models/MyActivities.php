@@ -751,7 +751,7 @@ class MyActivities extends Model
     public function getProfileValidationNotifyToRead()
     {
         if (self::$countOnly) {
-            return [RequestToParticipateCommunityForManager::className() => ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->asArray()->count()];
+            return [ProfileValidationNotifyToRead::className() => ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->asArray()->count()];
         }
         return ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->all();
     }
