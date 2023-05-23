@@ -13,10 +13,7 @@ namespace open20\amos\myactivities\widgets\icons;
 
 use open20\amos\core\widget\WidgetIcon;
 use open20\amos\myactivities\AmosMyActivities;
-use open20\amos\myactivities\models\MyActivities;
-
 use open20\amos\utility\models\BulletCounters;
-
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -58,30 +55,10 @@ class WidgetIconMyActivities extends WidgetIcon
                     Yii::$app->getUser()->getId(),
                     AmosMyActivities::getModuleName(),
                     $this->getNamespace(),
-                    false
+                    true
                 )
             );
         }
     }
-    
-    /**
-     * 
-     * @param type $reset
-     */
-//    public function getBulletCount() {
-//        // Read and reset counter from bullet_counters table, bacthed calculated!
-//        return $this->bulletCount;
-//    }
-
-
-//    /**
-//     * 
-//     * @param type $user_id
-//     * @return type
-//     */
-//    public function makeBulletCounter($userId = null, $className = null, $externalQuery = null)
-//    {
-//        return MyActivities::getCountActivities(true);
-//    }
 
 }

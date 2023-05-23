@@ -13,6 +13,7 @@ namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
 use open20\amos\news\models\News;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class NewsToValidate
@@ -72,5 +73,31 @@ class NewsToValidate extends \open20\amos\news\models\search\NewsSearch implemen
     public function getViewUrl()
     {
         return 'news/news/view';
+    }
+
+    /**
+     * Method that searches all news to be validated.
+     *
+     * @param array $params
+     * @param int $limit
+     * @return ActiveDataProvider
+     */
+    public function searchToValidateNews($params, $limit = null)
+    {
+        $dataProvider = parent::searchToValidateNews($params, null);
+
+        // workaround (News works only for community news)...
+        if (empty($ids)) {
+            $validators = $this->getValidatorUsersId();
+            if (in_array(\Yii::$app->user->id, $validators)) {
+                $dataProvider = parent::search($params, 'to-validate', $limit, false, 20);
+                $dataProvider->query
+                    ->andWhere([self::tableName() . '.status' => self::NEWS_WORKFLOW_STATUS_DAVALIDARE]);
+            }
+
+        }
+
+        $dataProvider->pagination = false;
+        return $dataProvider;
     }
 }
