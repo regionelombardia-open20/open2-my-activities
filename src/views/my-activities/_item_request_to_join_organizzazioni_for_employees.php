@@ -63,7 +63,8 @@ $profilo = $model->profilo;
                     'organizationId' => $model->profilo_id,
                     'userId' => $model->user_id,
                     'accept' => true,
-                    'redirectAction' => '/myactivities/my-activities/index'
+                    'redirectAction' => '/myactivities/my-activities/index',
+                    'uid' => $user_id
                 ]),
                 ['class' => 'btn btn-primary']
             ) ?>
@@ -73,11 +74,12 @@ $profilo = $model->profilo;
                     'organizationId' => $model->profilo_id,
                     'userId' => $model->user_id,
                     'accept' => false,
-                    'redirectAction' => '/myactivities/my-activities/index'
+                    'redirectAction' => '/myactivities/my-activities/index',
+                    'uid' => $user_id
                 ]),
                 ['class' => 'btn btn-secondary']
             ) ?>
         </div>
     </div>
-    <hr>
+    <hr />
 <?php endif; ?>

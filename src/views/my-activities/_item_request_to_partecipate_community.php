@@ -18,9 +18,10 @@ use open20\amos\core\icons\AmosIcons;
 use open20\amos\myactivities\AmosMyActivities;
 
 /** @var $model \open20\amos\myactivities\basic\RequestToParticipateCommunityForManager */
-//pr($model->getSearchString(), 'CLASSE: ' . $model->className() . ' creato: ' . $model->getCreatedAt());
 //\open20\amos\core\views\assets\AmosCoreAsset::register($this);
-$userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])->one();
+$userProfile = UserProfile::find()
+    ->andWhere(['user_id' => $model->updated_by])
+    ->one();
 ?>
 <?php if (!empty($userProfile)): ?>
     <div class="wrap-activity">
@@ -46,14 +47,19 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])-
                     ' asks to accept the invitation to participate you to the community:'); ?>
                 <?= $model->community->name; ?>
             </div>
+
             <div class="col-lg-12 col-xs-12">
-                <?= Html::a(AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('amosmyactivities',
-                        'View card'),
-                    Yii::$app->urlManager->createUrl([
-                        '/community/community/view',
-                        'id' => $model->community_id
-                    ])
-                ) ?>
+            <?= Html::a(
+                AmosIcons::show('search', [], 'dash')
+                    . ' '
+                    . AmosMyActivities::t('amosmyactivities', 'View card'),
+                Yii::$app->urlManager->createUrl([
+                    '/community/community/view',
+                    'id' => $model->community_id,
+                    'uid' => $user_id
+                ])
+            )
+            ?>
             </div>
         </div>
         <div class="col-md-3 col-xs-12 wrap-action">

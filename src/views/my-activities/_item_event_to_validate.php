@@ -13,6 +13,7 @@ use open20\amos\core\helpers\Html;
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\myactivities\AmosMyActivities;
 use yii\web\View;
+use open20\amos\myactivities\widgets\UserRequestValidation;
 
 /** @var $model \open20\amos\myactivities\basic\EventToValidate */
 
@@ -32,29 +33,37 @@ $this->registerJs($js, View::POS_READY);
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('calendar', [], 'dash') ?>
     </div>
-    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'Validation event'),
     ]) ?>
+    
     <div class="col-md-3 col-xs-12 wrap-action">
-        <?php
-        echo Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
-            Yii::$app->urlManager->createUrl([
-                '/events/event/validate',
-                'id' => $model->id,
-            ]),
-            ['class' => 'btn btn-primary']
-        )
-        ?>
-        <?php
-        echo Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
-            Yii::$app->urlManager->createUrl([
-                '/events/event/reject',
-                'id' => $model->id,
-            ]),
-            ['class' => 'btn btn-secondary events-reject-btns']
-        )
-        ?>
+    <?= Html::a(
+        AmosIcons::show('check')
+            . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Validate'),
+        Yii::$app->urlManager->createUrl([
+            '/events/event/validate',
+            'id' => $model->id,
+            'uid' => $user_id
+        ]),
+        ['class' => 'btn btn-primary']
+    )
+    ?>
+
+    <?= Html::a(
+        AmosIcons::show('close')
+            . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Reject'),
+        Yii::$app->urlManager->createUrl([
+            '/events/event/reject',
+            'id' => $model->id,
+            'uid' => $user_id
+        ]),
+        ['class' => 'btn btn-secondary events-reject-btns']
+    )
+    ?>
     </div>
 </div>
-<hr>
+<hr />

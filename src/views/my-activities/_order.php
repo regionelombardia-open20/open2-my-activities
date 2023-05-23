@@ -18,6 +18,13 @@ use yii\widgets\ActiveForm;
  * @var \open20\amos\myactivities\models\search\MyActivitiesModelSearch $modelSort
  * @var yii\widgets\ActiveForm $form
  */
+$form = ActiveForm::begin([
+    'action' => Yii::$app->controller->action->id,
+    'method' => 'get',
+    'options' => [
+        'class' => 'default-form'
+    ]
+]);
 ?>
 
 <div class="news-order element-to-toggle" data-toggle-element="form-order">
@@ -25,33 +32,31 @@ use yii\widgets\ActiveForm;
         <h2><?= AmosMyActivities::t('amosmyactivities', 'Sort by') ?>:</h2>
     </div>
 
-    <?php $form = ActiveForm::begin([
-        'action' => Yii::$app->controller->action->id,
-        'method' => 'get',
-        'options' => [
-            'class' => 'default-form'
-        ]
-    ]);
-    ?>
-
     <div class="col-sm-6 col-lg-4">
-        <?= $form->field($modelSort, 'orderType')->dropDownList(
-            [
-                SORT_DESC => AmosMyActivities::t('amosmyactivities', 'Descending'),
-                SORT_ASC => AmosMyActivities::t('amosmyactivities', 'Ascending'),
-            ]
-        )
-        ?>
+    <?= $form->field($modelSort, 'orderType')->dropDownList([
+        SORT_DESC => AmosMyActivities::t('amosmyactivities', 'Descending'),
+        SORT_ASC => AmosMyActivities::t('amosmyactivities', 'Ascending'),
+    ])
+    ?>
     </div>
 
     <div class="col-xs-12">
         <div class="pull-right">
-            <?= Html::a(AmosMyActivities::t('amosmyactivities', 'Reset'), [Yii::$app->controller->action->id], ['class' => 'btn btn-secondary']) ?>
-            <?= Html::submitButton(AmosMyActivities::t('amosmyactivities', 'Sort'), ['class' => 'btn btn-navigation-primary']) ?>
+        <?= Html::a(
+            AmosMyActivities::t('amosmyactivities', 'Reset'),
+            [Yii::$app->controller->action->id],
+            ['class' => 'btn btn-secondary']
+        )
+        ?>
+
+        <?= Html::submitButton(
+            AmosMyActivities::t('amosmyactivities', 'Sort'),
+            ['class' => 'btn btn-navigation-primary']
+        )
+        ?>
         </div>
     </div>
 
     <div class="clearfix"></div>
-    <?php ActiveForm::end(); ?>
-
 </div>
+<?php ActiveForm::end(); ?>

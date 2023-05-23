@@ -10,7 +10,6 @@
  */
 
 use open20\amos\core\views\DataProviderView;
-use open20\amos\myactivities\AmosMyActivities;
 use open20\amos\myactivities\assets\ModuleMyActivitiesAsset;
 
 ModuleMyActivitiesAsset::register($this);

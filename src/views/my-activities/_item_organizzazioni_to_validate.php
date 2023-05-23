@@ -27,25 +27,33 @@ $linkText = AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('a
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', '#organization_validation'),
     ]) ?>
+
     <div class="col-md-3 col-xs-12 wrap-action">
-        <?php
-        echo Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
-            Yii::$app->urlManager->createUrl([
-                '/organizzazioni/profilo/validate-profilo',
-                'id' => $model->id,
-            ]),
-            ['class' => 'btn btn-primary']
-        )
-        ?>
-        <?php
-        echo Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
-            Yii::$app->urlManager->createUrl([
-                '/organizzazioni/profilo/reject-profilo',
-                'id' => $model->id,
-            ]),
-            ['class' => 'btn btn-secondary']
-        )
-        ?>
+    <?= Html::a(
+        AmosIcons::show('check')
+            . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Validate'),
+        Yii::$app->urlManager->createUrl([
+            '/organizzazioni/profilo/validate-profilo',
+            'id' => $model->id,
+            'uid' => $user_id
+        ]),
+        ['class' => 'btn btn-primary']
+    )
+    ?>
+
+    <?= Html::a(
+        AmosIcons::show('close')
+            . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Reject'),
+        Yii::$app->urlManager->createUrl([
+            '/organizzazioni/profilo/reject-profilo',
+            'id' => $model->id,
+            'uid' => $user_id
+        ]),
+        ['class' => 'btn btn-secondary']
+    )
+    ?>
     </div>
 </div>
-<hr>
+<hr />

@@ -12,14 +12,11 @@
 use open20\amos\admin\AmosAdmin;
 use open20\amos\admin\models\UserProfile;
 use open20\amos\admin\widgets\UserCardWidget;
-use open20\amos\community\widgets\JoinCommunityWidget;
 use open20\amos\core\helpers\Html;
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\myactivities\AmosMyActivities;
 
 /** @var $model \open20\amos\myactivities\basic\RequestToParticipateCommunityForManager */
-//pr($model->getSearchString(), 'CLASSE: ' . $model->className() . ' creato: ' . $model->getCreatedAt());
-//\open20\amos\core\views\assets\AmosCoreAsset::register($this);
 $userProfile = UserProfile::find()->andWhere(['id' => $model->user_profile_id])->one();
 ?>
 <?php if (!empty($userProfile)): ?>
@@ -49,15 +46,44 @@ $userProfile = UserProfile::find()->andWhere(['id' => $model->user_profile_id])-
                         'View card'),
                     Yii::$app->urlManager->createUrl([
                         '/'. AmosAdmin::getModuleName() . '/user-profile/view',
-                        'id' => $model->user_profile_id
+                        'id' => $model->user_profile_id,
+                        'uid' => $user_id
                     ])
                 ) ?>
             </div>
         </div>
+
         <div class="col-md-3 col-xs-12 wrap-action">
-            <?= Html::a(AmosIcons::show('check').AmosMyActivities::t('amosmyactivities', 'Accept'), [ '/'. AmosAdmin::getModuleName() . '/user-profile/accept-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-primary']) ?>
-            <?= Html::a(AmosIcons::show('close'). AmosMyActivities::t('amosmyactivities', 'Reject'),[ '/'. AmosAdmin::getModuleName() . '/user-profile/reject-request', 'id' => $model->id, 'fromMyactivities' => true], ['class' => 'btn btn-navigation-secondary']) ?>
+        <?= Html::a(
+            AmosIcons::show('check')
+            . AmosMyActivities::t('amosmyactivities', 'Accept'),
+            [
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/accept-request',
+                'id' => $model->id,
+                'fromMyactivities' => true,
+                'uid' => $user_id
+            ],
+            ['class' => 'btn btn-navigation-primary']
+        )
+        ?>
+
+        <?= Html::a(
+            AmosIcons::show('close')
+            . AmosMyActivities::t('amosmyactivities', 'Reject'),
+            [
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/reject-request',
+                'id' => $model->id,
+                'fromMyactivities' => true,
+                'uid' => $user_id
+            ],
+            ['class' => 'btn btn-navigation-secondary']
+        )
+        ?>
         </div>
     </div>
-    <hr>
+    <hr />
 <?php endif; ?>

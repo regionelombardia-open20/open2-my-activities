@@ -13,39 +13,53 @@ use open20\amos\core\icons\AmosIcons;
 use open20\amos\core\utilities\ModalUtility;
 use open20\amos\myactivities\AmosMyActivities;
 use open20\amos\admin\AmosAdmin;
+use open20\amos\myactivities\widgets\UserRequestValidation;
 
 /** @var $model \open20\amos\myactivities\basic\WaitingContacts */
-
-
 ?>
+
 <div class="wrap-activity">
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('users', [], 'dash') ?>
     </div>
-    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'User validation request'),
-    ]) ?>
+    ])
+    ?>
+    
     <div class="col-md-3 col-xs-12 wrap-action">
         <?= ModalUtility::addConfirmRejectWithModal([
             'modalId' => 'validate-user-profile-modal-id-' . $model->id,
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#VALIDATE_USER_PROFILE_MODAL_TEXT'),
-            'btnText' => AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
+            'btnText' => AmosIcons::show('check')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Validate'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/'. AmosAdmin::getModuleName() . '/user-profile/validate-user-profile',
-                'id' => $model->id
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/validate-user-profile',
+                'id' => $model->id,
+                'uid' => $user_id
             ]),
             'btnOptions' => [
                 'class' => 'btn btn-primary'
             ]
-        ]); ?>
+        ])
+        ?>
+
         <?= ModalUtility::addConfirmRejectWithModal([
             'modalId' => 'reject-user-profile-modal-id-' . $model->id,
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#REJECT_USER_PROFILE_MODAL_TEXT'),
-            'btnText' => AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
+            'btnText' => AmosIcons::show('close')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Reject'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/'. AmosAdmin::getModuleName() . '/user-profile/reject-user-profile',
-                'id' => $model->id
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/reject-user-profile',
+                'id' => $model->id,
+                'uid' => $user_id
             ]),
             'btnOptions' => [
                 'class' => 'btn btn-secondary'
@@ -53,4 +67,4 @@ use open20\amos\admin\AmosAdmin;
         ]); ?>
     </div>
 </div>
-<hr>
+<hr />

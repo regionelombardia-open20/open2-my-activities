@@ -13,7 +13,6 @@ namespace open20\amos\myactivities\basic;
 
 use open20\amos\myactivities\models\search\MyActivitiesModelSearch;
 use yii\helpers\ArrayHelper;
-use yii\helpers\VarDumper;
 
 /**
  * Class MyActivitiesList
@@ -95,26 +94,23 @@ class MyActivitiesList implements MyActivitiesListInterface
      */
     public function sortMyActivitiesList(int $mode = SORT_DESC)
     {
-
-//        echo "<div style='height: 200px'>test</div>";
-//        var_dump($mode);
-//        echo '<hr>';
-//        foreach ($this->myActivitiesList as $item) {
-//            var_dump($item->updatedAt); echo '<br>';
-//        }
-
         if (count($this->myActivitiesList) > 0) {
             if ($mode == SORT_DESC) {
-                ArrayHelper::multisort($this->myActivitiesList, 'updatedAt', SORT_DESC, SORT_STRING  );
+                ArrayHelper::multisort(
+                    $this->myActivitiesList,
+                    'updatedAt',
+                    SORT_DESC,
+                    SORT_STRING
+                );
             } else {
-                ArrayHelper::multisort($this->myActivitiesList, 'updatedAt', SORT_ASC, SORT_STRING  );
+                ArrayHelper::multisort(
+                    $this->myActivitiesList,
+                    'updatedAt',
+                    SORT_ASC,
+                    SORT_STRING
+                );
             }
         }
-
-//        echo '<hr>';
-//        foreach ($this->myActivitiesList as $item) {
-//            var_dump($item->updatedAt); echo '<br>';
-//        }
 
     }
 }

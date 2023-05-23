@@ -59,7 +59,8 @@ $userProfile = (!is_null($model->user) ? $model->user->userProfile : null);
                 Yii::$app->urlManager->createUrl([
                     '/organizzazioni/profilo/accept-user',
                     'profiloId' => $model->profilo_id,
-                    'userId' => $model->user_id
+                    'userId' => $model->user_id,
+                    'uid' => $user_id
                 ]),
                 ['class' => 'btn btn-primary']
             ) ?>
@@ -67,11 +68,12 @@ $userProfile = (!is_null($model->user) ? $model->user->userProfile : null);
                 Yii::$app->urlManager->createUrl([
                     '/organizzazioni/profilo/reject-user',
                     'profiloId' => $model->profilo_id,
-                    'userId' => $model->user_id
+                    'userId' => $model->user_id,
+                    'uid' => $user_id
                 ]),
                 ['class' => 'btn btn-secondary']
             ) ?>
         </div>
     </div>
-    <hr>
+    <hr />
 <?php endif; ?>

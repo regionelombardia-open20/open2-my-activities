@@ -41,35 +41,52 @@ use open20\amos\myactivities\AmosMyActivities;
         </div>
         <div class="col-lg-12 col-xs-12">
             <?php /** @var \open20\amos\core\interfaces\ViewModelInterface $model */ ?>
-            <?= Html::a(AmosIcons::show('search', [], 'dash') . ' <span>' . AmosMyActivities::t('amosmyactivities',
-                    'View card') . '</span>', $model->getFullViewUrl()
-//            Yii::$app->urlManager->createUrl([
-//                '/community/community/view',
-//                'id' => $model->id
-//            ])
-            ) ?>
+            <?= Html::a(
+                AmosIcons::show('search',
+                    [],
+                    'dash'
+                )
+                . ' <span>'
+                . AmosMyActivities::t('amosmyactivities', 'View card')
+                . '</span>',
+                $model->getFullViewUrl()
+            )
+            ?>
         </div>
     </div>
+
     <div class="col-md-3 col-xs-12 wrap-action">
         <?= ModalUtility::addConfirmRejectWithModal([
             'modalId' => 'validate-user-profile-modal-id-' . $model->id,
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#ACTIVATE_USER_PROFILE'),
-            'btnText' => AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Activate'),
+            'btnText' => AmosIcons::show('check')
+                . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Activate'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/'. AmosAdmin::getModuleName() . '/user-profile/reactivate-account',
-                'id' => $model->id
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/reactivate-account',
+                'id' => $model->id,
+                'uid' => $user_id
             ]),
             'btnOptions' => [
                 'class' => 'btn btn-primary'
             ]
-        ]); ?>
-        <?php echo ModalUtility::addConfirmRejectWithModal([
+        ])
+        ?>
+        
+        <?= ModalUtility::addConfirmRejectWithModal([
             'modalId' => 'reject-user-profile-modal-id-' . $model->id,
             'modalDescriptionText' => AmosMyActivities::t('amosmyactivities', '#REJECT_USER_PROFILE_MODAL_TEXT'),
-            'btnText' => AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
+            'btnText' => AmosIcons::show('close')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Reject'),
             'btnLink' => Yii::$app->urlManager->createUrl([
-                '/'. AmosAdmin::getModuleName() . '/user-profile/reject-reactivation-request',
-                'id' => $model->id
+                '/'
+                . AmosAdmin::getModuleName()
+                . '/user-profile/reject-reactivation-request',
+                'id' => $model->id,
+                'uid' => $user_id
             ]),
             'btnOptions' => [
                 'class' => 'btn btn-secondary'
@@ -77,4 +94,4 @@ use open20\amos\myactivities\AmosMyActivities;
         ]); ?>
     </div>
 </div>
-<hr>
+<hr />

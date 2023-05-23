@@ -25,24 +25,26 @@ use open20\amos\myactivities\AmosMyActivities;
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'Proposta di progetto da validare'),
     ]) ?>
     <div class="col-md-3 col-xs-12 wrap-action">
-        <?php
-        echo Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
+        
+        <?= Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
             Yii::$app->urlManager->createUrl([
                 '/showcaseprojects/showcase-project-proposal/validate-showcase-project-proposal',
                 'id' => $model->id,
+                'uid' => $user_id
             ]),
             ['class' => 'btn btn-primary']
         )
         ?>
-        <?php
-        echo Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
+        
+        <?= Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
             Yii::$app->urlManager->createUrl([
                 '/showcaseprojects/showcase-project-proposal/reject-showcase-project-proposal',
                 'id' => $model->id,
+                'uid' => $user_id
             ]),
             ['class' => 'btn btn-secondary']
         )
         ?>
     </div>
 </div>
-<hr>
+<hr />

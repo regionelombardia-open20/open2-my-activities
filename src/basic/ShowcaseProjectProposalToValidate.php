@@ -13,8 +13,6 @@ namespace open20\amos\myactivities\basic;
 
 use open20\amos\admin\models\UserProfile;
 use open20\amos\showcaseprojects\models\search\ShowcaseProjectProposalSearch;
-use open20\amos\showcaseprojects\models\search\ShowcaseProjectSearch;
-use open20\amos\showcaseprojects\models\ShowcaseProject;
 use open20\amos\showcaseprojects\models\ShowcaseProjectProposal;
 
 /**

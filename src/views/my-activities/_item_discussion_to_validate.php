@@ -12,6 +12,7 @@
 use open20\amos\core\helpers\Html;
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\myactivities\AmosMyActivities;
+use open20\amos\myactivities\widgets\UserRequestValidation;
 
 /** @var $model \open20\amos\myactivities\basic\DiscussionToValidate */
 
@@ -20,29 +21,36 @@ use open20\amos\myactivities\AmosMyActivities;
     <div class="col-md-1 col-xs-2 icon-plugin">
         <?= AmosIcons::show('comment') ?>
     </div>
-    <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
+    <?= UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => AmosMyActivities::t('amosmyactivities', 'Validation discussion'),
     ]) ?>
     <div class="col-md-3 col-xs-12 wrap-action">
-        <?php
-        echo Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
+    <?= Html::a(
+            AmosIcons::show('check')
+            . ' '
+            . AmosMyActivities::t('amosmyactivities', 'Validate'),
             Yii::$app->urlManager->createUrl([
                 '/discussioni/discussioni-topic/validate-discussion',
                 'id' => $model->id,
+                'uid' => $user_id
             ]),
             ['class' => 'btn btn-primary']
         )
         ?>
-        <?php
-        echo Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
+
+        <?= Html::a(
+            AmosIcons::show('close')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Reject'),
             Yii::$app->urlManager->createUrl([
                 '/discussioni/discussioni-topic/reject-discussion',
                 'id' => $model->id,
+                'uid' => $user_id
             ]),
             ['class' => 'btn btn-secondary']
         )
         ?>
     </div>
 </div>
-<hr>
+<hr />

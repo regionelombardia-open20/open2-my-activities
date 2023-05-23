@@ -54,24 +54,36 @@ $userProfile = (!is_null($model->user) ? $model->user->userProfile : null);
                 <?= Html::a($linkText, $userProfile->getFullViewUrl()) ?>
             </div>
         </div>
+
         <div class="col-md-3 col-xs-12 wrap-action">
-            <?= Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities', 'Validate'),
-                Yii::$app->urlManager->createUrl([
-                    '/organizzazioni/profilo-sedi/accept-user',
-                    'profiloSediId' => $model->profilo_sedi_id,
-                    'userId' => $model->user_id
-                ]),
-                ['class' => 'btn btn-primary']
-            ) ?>
-            <?= Html::a(AmosIcons::show('close') . ' ' . AmosMyActivities::t('amosmyactivities', 'Reject'),
-                Yii::$app->urlManager->createUrl([
-                    '/organizzazioni/profilo-sedi/reject-user',
-                    'profiloSediId' => $model->profilo_sedi_id,
-                    'userId' => $model->user_id
-                ]),
-                ['class' => 'btn btn-secondary']
-            ) ?>
+        <?= Html::a(
+            AmosIcons::show('check')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Validate'),
+            Yii::$app->urlManager->createUrl([
+                '/organizzazioni/profilo-sedi/accept-user',
+                'profiloSediId' => $model->profilo_sedi_id,
+                'userId' => $model->user_id,
+                'uid' => $user_id
+            ]),
+            ['class' => 'btn btn-primary']
+        )
+        ?>
+        
+        <?= Html::a(
+            AmosIcons::show('close')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Reject'),
+            Yii::$app->urlManager->createUrl([
+                '/organizzazioni/profilo-sedi/reject-user',
+                'profiloSediId' => $model->profilo_sedi_id,
+                'userId' => $model->user_id,
+                'uid' => $user_id
+            ]),
+            ['class' => 'btn btn-secondary']
+        )
+        ?>
         </div>
     </div>
-    <hr>
+    <hr />
 <?php endif; ?>

@@ -46,55 +46,64 @@ $userProfile = UserProfile::find()->andWhere(['user_id' => $model->updated_by])-
             <div class="col-lg-12 col-xs-12">
                 <?php
                 $url = null;
-                if (Yii::$app->hasModule('news') && ($model->classname == \open20\amos\news\models\News::className())) {
+                if (Yii::$app->hasModule('news') && ($model->classname == \open20\amos\news\models\News::class)) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/news/news/update',
                         'id' => $model->context_id,
-                        '#' => 'tab-reports'
+                        '#' => 'tab-reports',
+                        'uid' => $user_id
                     ]);
                 }
 
-                if (Yii::$app->hasModule('discussioni') && ($model->classname == \open20\amos\discussioni\models\DiscussioniTopic::className())) {
+                if (Yii::$app->hasModule('discussioni') && ($model->classname == \open20\amos\discussioni\models\DiscussioniTopic::class)) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/discussioni/discussioni-topic/update',
                         'id' => $model->context_id,
-                        '#' => 'tab-reports'
+                        '#' => 'tab-reports',
+                        'uid' => $user_id
                     ]);
                 }
 
-                if (Yii::$app->hasModule('documenti') && ($model->classname == \open20\amos\documenti\models\Documenti::className())) {
+                if (Yii::$app->hasModule('documenti') && ($model->classname == \open20\amos\documenti\models\Documenti::class)) {
                     $url = Yii::$app->urlManager->createUrl([
                         '/documenti/documenti/update',
                         'id' => $model->context_id,
-                        '#' => 'tab-reports'
+                        '#' => 'tab-reports',
+                        'uid' => $user_id
                     ]);
                 }
 
                 ?>
 
-                <?= Html::a(AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('amosmyactivities',
-                        'Vedi scheda'),
+                <?= Html::a(
+                    AmosIcons::show('search', [], 'dash')
+                        . ' '
+                        . AmosMyActivities::t('amosmyactivities', 'Vedi scheda'),
                     $url
-                ) ?>
+                )
+                ?>
             </div>
         </div>
+
         <div class="col-md-3 col-xs-12 wrap-action">
-            <?php
-            echo Html::a(AmosIcons::show('check') . ' ' . AmosMyActivities::t('amosmyactivities',
-                    'Reading confirmation'),
-                Yii::$app->urlManager->createUrl([
-                    '/report/report/read-confirmation',
-                    'id' => $model->id,
-                ]),
-                [
-                    'class' => 'btn btn-primary',
-                    'data' => [
-                        'confirm' => AmosMyActivities::t('amosmyactivities', 'Do you really want to mark as read?')
-                    ]
+        <?= Html::a(
+            AmosIcons::show('check')
+                . ' '
+                . AmosMyActivities::t('amosmyactivities', 'Reading confirmation'),
+            Yii::$app->urlManager->createUrl([
+                '/report/report/read-confirmation',
+                'id' => $model->id,
+                'uid' => $user_id
+            ]),
+            [
+                'class' => 'btn btn-primary',
+                'data' => [
+                    'confirm' => AmosMyActivities::t('amosmyactivities', 'Do you really want to mark as read?')
                 ]
-            )
-            ?>
+            ]
+        )
+        ?>
         </div>
     </div>
-    <hr>
+    <hr />
 <?php endif; ?>
