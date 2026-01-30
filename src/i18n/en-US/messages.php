@@ -14,6 +14,7 @@ return [
     '#ACTIVATE_USER_PROFILE' => 'Reactivate profile',
     'Ascending' => 'Ascending',
     ' asks to accept the invitation to participate you to the community:' => 'asks to accept the invitation to participate you to the community:',
+    ' asks to accept the invitation to participate you to the channel:' => 'asks to accept the invitation to participate you to the channel:',
     ' asks to be validated' => 'asks to be validated',
     ' asks validation for:' => 'asks validation for:',
     ' asks you to be accepted as a community participant of your Community:' => 'asks you to be accepted as a community participant of your Community:',
@@ -72,4 +73,6 @@ return [
     'View card' => 'View card',
     '#view_organization' => 'View organization',
     'View profile' => 'View profile',
+    'Validation comment' => 'Validation comment',
+    'Validation comment answer' => 'Validation comment answer',
 ];

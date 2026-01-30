@@ -10,10 +10,33 @@
  */
 
 use open20\amos\core\helpers\Html;
+use open20\amos\admin\AmosAdmin;
 use open20\amos\core\icons\AmosIcons;
 use open20\amos\myactivities\AmosMyActivities;
+use open20\amos\cwh\models\CwhPubblicazioni;
+use open20\amos\cwh\models\CwhConfigContents;
+use open20\amos\cwh\models\CwhPubblicazioniCwhNodiValidatoriMm;
+use open20\amos\documenti\models\DocumentiCartellePath;
+use open20\amos\documenti\utility\DocumentsUtility;
+use open20\amos\community\models\Community;
 
 /** @var $model \open20\amos\myactivities\basic\DocumentToValidate */
+$adminModule = AmosAdmin::instance();
+if ($model->modelClassName == 'open20\amos\documenti\models\Documenti'){
+    $percorso = $model->titolo;
+    $percorso = DocumentiCartellePath::getPath($model) . $percorso;
+	$cwhconfig = CwhConfigContents::findOne(['classname'=>$model->modelClassName]);
+    $cwhPubb = CwhPubblicazioni::find()->andWhere(['content_id' => $model->id])->andWhere(['cwh_config_contents_id' => $cwhconfig->id])->one();
+    if (!is_null($cwhPubb)){
+        $cwhPubblNodiVal = CwhPubblicazioniCwhNodiValidatoriMm::findOne(['cwh_pubblicazioni_id' => $cwhPubb->id]);
+        $idCommunity = explode('-', $cwhPubblNodiVal->cwh_nodi_id);
+        $community = Community::findOne(['id' => $idCommunity[1]]);
+        $percorso = DocumentsUtility::getPercorsoCommunity($community, $percorso);
+    }
+} else {
+    $percorso = $model->getTitle();
+}
+
 
 
 ?>
@@ -28,6 +51,7 @@ use open20\amos\myactivities\AmosMyActivities;
     <?= \open20\amos\myactivities\widgets\UserRequestValidation::widget([
         'model' => $model,
         'labelKey' => $labelKey,
+        'text' => $percorso,
     ]) ?>
     
     <div class="col-md-3 col-xs-12 wrap-action">

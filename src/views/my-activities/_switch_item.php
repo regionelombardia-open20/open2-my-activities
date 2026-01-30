@@ -82,6 +82,21 @@ if (Yii::$app->hasModule('discussioni')) {
     }
 }
 
+if (Yii::$app->hasModule('comments')) {
+    if ($model instanceof \open20\amos\myactivities\basic\CommentToValidate) {
+        echo $this->render('_item_comment_to_validate', [
+            'model' => $model,
+            'user_id' => $user_id
+        ]);
+    }
+    if ($model instanceof \open20\amos\myactivities\basic\CommentReplyToValidate) {
+        echo $this->render('_item_comment_reply_to_validate', [
+            'model' => $model,
+            'user_id' => $user_id
+        ]);
+    }
+}
+
 if (Yii::$app->hasModule('documenti')) {
     if ($model instanceof \open20\amos\myactivities\basic\DocumentToValidate) {
         echo $this->render('_item_document_to_validate', [
@@ -244,7 +259,7 @@ if (Yii::$app->hasModule('organizzazioni')) {
     }
 }
 
-if (Yii::$app->hasModule('landing')) {
+if (Yii::$app->hasModule('landing') && class_exists('openinnovation\landing\models\Territory')) {
     if ($model instanceof \open20\amos\myactivities\basic\TerritoryToValidate) {
         echo $this->render('_item_territory_to_validate', [
             'model' => $model,

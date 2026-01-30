@@ -21,10 +21,13 @@ use open20\amos\myactivities\AmosMyActivities;
  * @var \open20\amos\core\record\Record $model
  * @var string $validationRequestTime
  * @var string $labelKey
+ * @var string $text
  */
 
 /** @var AmosAdmin $adminModule */
 $adminModule = AmosAdmin::instance();
+
+$myActivities = \Yii::$app->getModule(AmosMyActivities::getModuleName());
 
 ?>
 
@@ -47,12 +50,12 @@ $adminModule = AmosAdmin::instance();
         <p class="user-report"><?= $userProfile->getNomeCognome() ?></p>
         <?= AmosMyActivities::t('amosmyactivities', ' asks validation for:'); ?>
         <?php /** @var \open20\amos\core\interfaces\ContentModelInterface $model */ ?>
-        <?= $model->getTitle() ?>
+        <?= (!empty($text) && $myActivities->documentPath )? $text : $model->getTitle()  ?>
     </div>
     <div class="col-lg-12 col-xs-12">
         <?php /** @var \open20\amos\core\interfaces\ViewModelInterface $model */ ?>
         <?= Html::a(AmosIcons::show('search', [], 'dash') . ' <span>' . AmosMyActivities::t('amosmyactivities',
-                'View card') . '</span>', $model->getFullViewUrl()
+                'View card') . '</span>', !empty($customUrl) ? $customUrl : $model->getFullViewUrl()
 //            Yii::$app->urlManager->createUrl([
 //                '/community/community/view',
 //                'id' => $model->id

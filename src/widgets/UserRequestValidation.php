@@ -24,12 +24,17 @@ use yii\base\Widget;
  * Class UserRequestValidation
  * @package open20\amos\myactivities\widgets
  */
-class UserRequestValidation extends Widget
-{
+class UserRequestValidation extends Widget {
+
     /**
      * @var Record|MyActivitiesModelsInterface $model
      */
     public $model;
+
+    /**
+     * @var string $customUrl - custom url for the link
+     */
+    public $customUrl = '';
 
     /**
      * @var string $labelKey - label for activity title translation
@@ -37,10 +42,14 @@ class UserRequestValidation extends Widget
     public $labelKey;
 
     /**
+     * @var string $text - label for directory path of a document
+     */
+    public $text = '';
+
+    /**
      * @inheritdoc
      */
-    public function init()
-    {
+    public function init() {
         parent::init();
 
         if (!($this->model instanceof MyActivitiesModelsInterface)) {
@@ -51,14 +60,17 @@ class UserRequestValidation extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
-    {
+    public function run() {
         /** @var WorkflowLogFunctionsBehavior|WorkflowModelInterface $model */
         $model = $this->model->getWrappedObject();
         $workflowModule = \Yii::$app->getModule('workflow');
         if ($workflowModule) {
-            $userId = $model->getStatusLastUpdateUser($model->getToValidateStatus());
-            $validationRequestTime = $model->getStatusLastUpdateTime($model->getToValidateStatus());
+            if (method_exists($model, 'getStatusLastUpdateUser')) {
+                $userId = $model->getStatusLastUpdateUser($model->getToValidateStatus());
+            }
+            if (method_exists($model, 'getStatusLastUpdateTime')) {
+                $validationRequestTime = $model->getStatusLastUpdateTime($model->getToValidateStatus());
+            }
         }
         if (is_null($userId)) {
             $userId = $model->updated_by;
@@ -77,10 +89,12 @@ class UserRequestValidation extends Widget
             $userProfile = UserProfile::find()->andWhere(['user_id' => $userId])->one();
             if (!is_null($userProfile)) {
                 return $this->render('user_request_validation', [
-                    'userProfile' => $userProfile,
-                    'model' => $this->model,
-                    'validationRequestTime' => $validationRequestTime,
-                    'labelKey' => $this->labelKey
+                            'userProfile' => $userProfile,
+                            'model' => $this->model,
+                            'customUrl' => $this->customUrl,
+                            'validationRequestTime' => $validationRequestTime,
+                            'labelKey' => $this->labelKey,
+                            'text' => $this->text,
                 ]);
             }
         }

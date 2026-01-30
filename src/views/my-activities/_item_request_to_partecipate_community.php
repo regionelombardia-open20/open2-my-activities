@@ -22,6 +22,8 @@ use open20\amos\myactivities\AmosMyActivities;
 $userProfile = UserProfile::find()
     ->andWhere(['user_id' => $model->updated_by])
     ->one();
+
+$moduleCommunity = \Yii::$app->getModule('community');
 ?>
 <?php if (!empty($userProfile)): ?>
     <div class="wrap-activity">
@@ -43,8 +45,14 @@ $userProfile = UserProfile::find()
             </div>
             <div class="col-lg-12 col-xs-12">
                 <p class="user-report"><?= $userProfile->getNomeCognome() ?></p>
-                <?= AmosMyActivities::t('amosmyactivities',
-                    ' asks to accept the invitation to participate you to the community:'); ?>
+                <?php if($moduleCommunity && $moduleCommunity->hasProperty('enableNewCommunityHeader') && $moduleCommunity->enableNewCommunityHeader && $model->community->parent_id) { 
+                    echo AmosMyActivities::t('amosmyactivities',
+                    ' asks to accept the invitation to participate you to the channel:');
+                }else {
+                echo AmosMyActivities::t('amosmyactivities',
+                    ' asks to accept the invitation to participate you to the community:'); 
+                }
+                ?>
                 <?= $model->community->name; ?>
             </div>
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aria S.p.A.
  * OPEN 2.0
@@ -13,9 +14,12 @@ namespace open20\amos\myactivities\models;
 use open20\amos\admin\AmosAdmin;
 use open20\amos\admin\models\UserProfile;
 use open20\amos\admin\models\UserContact;
+use open20\amos\comments\utility\CommentsUtility;
 use open20\amos\core\user\User;
 use open20\amos\community\models\Community;
 use open20\amos\discussioni\models\DiscussioniTopic;
+use open20\amos\myactivities\basic\CommentReplyToValidate;
+use open20\amos\myactivities\basic\CommentToValidate;
 use open20\amos\news\models\News;
 use open20\amos\myactivities\AmosMyActivities;
 use open20\amos\myactivities\basic\CommunityToValidate;
@@ -61,8 +65,8 @@ use yii\helpers\ArrayHelper;
  * Class MyActivities
  * @package open20\amos\myactivities\models
  */
-class MyActivities extends Model
-{
+class MyActivities extends Model {
+
     /**
      * @var MyActivitiesList $myActivitiesList
      */
@@ -86,10 +90,9 @@ class MyActivities extends Model
     /**
      * @inheritdoc
      */
-    public function init()
-    {
+    public function init() {
         $this->myActivitiesList = new MyActivitiesList();
-        $this->user_id          = Yii::$app->user->id;
+        $this->user_id = Yii::$app->user->id;
         if (\Yii::$app instanceof \yii\web\Application) {
             $this->queryParams = Yii::$app->request->getQueryParams();
         }
@@ -102,11 +105,10 @@ class MyActivities extends Model
      * @return bool|int|mixed
      * @throws \yii\base\InvalidConfigException
      */
-    public static function getCountActivities($count = false)
-    {
+    public static function getCountActivities($count = false) {
         self::$countOnly = $count;
         /** @var MyActivities $model */
-        $model           = AmosMyActivities::instance()->createModel('MyActivities');
+        $model = AmosMyActivities::instance()->createModel('MyActivities');
         $allMyActivities = $model->getMyActivities(null, false);
         $counter = 0;
         foreach ($allMyActivities as $activity => $count) {
@@ -124,8 +126,7 @@ class MyActivities extends Model
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function getMyActivities($modelSearch = null, $enableOrder = true)
-    {
+    public function getMyActivities($modelSearch = null, $enableOrder = true) {
         $this->myActivitiesList->addModelSet($this->getWaitingContacts());
         $this->myActivitiesList->addModelSet($this->getNewsToValidate($enableOrder));
         $this->myActivitiesList->addModelSet($this->getProfiloToValidate($enableOrder));
@@ -144,6 +145,8 @@ class MyActivities extends Model
         $this->myActivitiesList->addModelSet($this->getUserProfileActivationRequest());
         $this->myActivitiesList->addModelSet($this->getShowcaseProjectUserToAccept($enableOrder));
         $this->myActivitiesList->addModelSet($this->getShowcaseProjectProposalToValidate($enableOrder));
+        $this->myActivitiesList->addModelSet($this->getCommentToValidate($enableOrder));
+        $this->myActivitiesList->addModelSet($this->getCommentReplyToValidate($enableOrder));
 
         /* NOT IMPLEMENTED
           $this->myActivitiesList->addModelSet($this->getSurveyToValidate());
@@ -172,15 +175,14 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getWaitingContacts()
-    {
+    protected function getWaitingContacts() {
         if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
             /** @var ActiveQuery $query */
             $query = WaitingContacts::find()
-                ->innerJoinWith('user')
-                ->andWhere([
-                WaitingContacts::tableName().'.contact_id' => $this->user_id,
-                WaitingContacts::tableName().'.status' => UserContact::STATUS_INVITED
+                    ->innerJoinWith('user')
+                    ->andWhere([
+                WaitingContacts::tableName() . '.contact_id' => $this->user_id,
+                WaitingContacts::tableName() . '.status' => UserContact::STATUS_INVITED
             ]);
 
             if (self::$countOnly) {
@@ -198,10 +200,9 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getNewsToValidate($enableOrder)
-    {
+    protected function getNewsToValidate($enableOrder) {
         if (Yii::$app->hasModule('news')) {
-            $modelSearch  = new NewsToValidate();
+            $modelSearch = new NewsToValidate();
             /** @var ActiveDataProvider $dataProvider */
             $dataProvider = $modelSearch->searchToValidateNews($this->queryParams);
             if (!$enableOrder) {
@@ -211,7 +212,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = NewsToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [NewsToValidate::class => $query->asArray()->count()];
@@ -222,15 +223,18 @@ class MyActivities extends Model
 
         return [];
     }
-    
+
     /**
      * @param bool $enableOrder
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getProfiloToValidate($enableOrder)
-    {
+    protected function getProfiloToValidate($enableOrder) {
         if (Yii::$app->hasModule('organizzazioni')) {
+            $module = \Yii::$app->getModule('organizzazioni');
+            if ($module->hasProperty('enableWorkflow') && $module->enableWorkflow == false) {
+                return [];
+            }
             $modelSearch = new ProfiloToValidate();
             /** @var ActiveDataProvider $dataProvider */
             $dataProvider = $modelSearch->searchToValidateProfilo($this->queryParams);
@@ -241,7 +245,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = ProfiloToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ProfiloToValidate::class => $query->asArray()->count()];
@@ -258,10 +262,9 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getTerritoryToValidate($enableOrder)
-    {
-        if (Yii::$app->hasModule('landing')) {
-            $modelSearch  = new TerritoryToValidate();
+    protected function getTerritoryToValidate($enableOrder) {
+        if (Yii::$app->hasModule('landing') && class_exists('openinnovation\landing\models\Territory')) {
+            $modelSearch = new TerritoryToValidate();
             /** @var ActiveDataProvider $dataProvider */
             $dataProvider = $modelSearch->searchToValidate($this->queryParams);
             if (!$enableOrder) {
@@ -271,7 +274,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = TerritoryToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [TerritoryToValidate::class => $query->asArray()->count()];
@@ -288,8 +291,7 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getInnovativeSolutionsToValidate($enableOrder)
-    {
+    protected function getInnovativeSolutionsToValidate($enableOrder) {
         if (Yii::$app->hasModule('innovativesolutions')) {
             $modelSearch = new InnovativeSolutionToValidate();
             /** @var ActiveDataProvider $dataProvider */
@@ -301,7 +303,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = InnovativeSolutionToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [InnovativeSolutionToValidate::class => $query->asArray()->count()];
@@ -317,13 +319,12 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRequestToParticipateCommunity()
-    {
+    protected function getRequestToParticipateCommunity() {
         if (Yii::$app->hasModule('community')) {
             /** @var ActiveQuery $query */
             $query = RequestToParticipateCommunity::find()
-                ->joinWith('community')
-                ->andWhere([
+                    ->joinWith('community')
+                    ->andWhere([
                 'community.validated_once' => 1,
                 'community_user_mm.user_id' => $this->user_id,
                 'community_user_mm.status' => \open20\amos\community\models\CommunityUserMm::STATUS_WAITING_OK_USER
@@ -343,24 +344,23 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserProfileToValidate()
-    {
+    protected function getUserProfileToValidate() {
         $moduleAdmin = Yii::$app->getModule(AmosAdmin::getModuleName());
         if ($moduleAdmin) {
             /** @var ActiveQuery|null $query */
             $query = null;
             if (\Yii::$app->user->can('FACILITATOR')) {
                 /** @var User $user */
-                $user  = Yii::$app->user->identity;
+                $user = Yii::$app->user->identity;
                 $query = UserProfileToValidate::find()
-                    ->andWhere([
+                        ->andWhere([
                     'status' => \open20\amos\admin\models\UserProfile::USERPROFILE_WORKFLOW_STATUS_TOVALIDATE,
                     'attivo' => 1,
                     'facilitatore_id' => $user->userProfile->id
                 ]);
             } else if (!$moduleAdmin->enableExternalFacilitator && \Yii::$app->user->can('VALIDATOR')) {
                 $query = UserProfileToValidate::find()
-                    ->andWhere([
+                        ->andWhere([
                     'status' => \open20\amos\admin\models\UserProfile::USERPROFILE_WORKFLOW_STATUS_TOVALIDATE,
                     'attivo' => 1
                 ]);
@@ -381,14 +381,13 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getUserProfileActivationRequest()
-    {
+    protected function getUserProfileActivationRequest() {
         if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
             if (Yii::$app->user->can('ADMIN')) {
                 /** @var ActiveQuery $query */
                 $query = UserProfileActivationRequest::find()
-                    ->innerJoinWith('userProfileReactivationRequest')
-                    ->andWhere(['user_profile.attivo' => 0]);
+                        ->innerJoinWith('userProfileReactivationRequest')
+                        ->andWhere(['user_profile.attivo' => 0]);
 
                 if (self::$countOnly) {
                     return [UserProfileActivationRequest::class => $query->asArray()->count()];
@@ -406,11 +405,10 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getComunityToValidate($enableOrder)
-    {
+    protected function getComunityToValidate($enableOrder) {
         if (Yii::$app->hasModule('community')) {
             $communitySearch = new CommunityToValidate;
-            $dataProvider    = $communitySearch->searchToValidateCommunities($this->queryParams);
+            $dataProvider = $communitySearch->searchToValidateCommunities($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
             }
@@ -418,7 +416,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = CommunityToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [CommunityToValidate::class => $query->asArray()->count()];
@@ -435,8 +433,7 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getDiscussionToValidate($enableOrder)
-    {
+    protected function getDiscussionToValidate($enableOrder) {
         if (Yii::$app->hasModule('discussioni')) {
             $modelSearch = new DiscussionToValidate;
 
@@ -448,7 +445,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = DiscussionToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [DiscussionToValidate::class => $query->asArray()->count()];
@@ -461,14 +458,73 @@ class MyActivities extends Model
     }
 
     /**
+     * @param $enableOrder
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getCommentToValidate($enableOrder) {
+        if (Yii::$app->hasModule('comments')) {
+            $modelSearch = new CommentToValidate;
+
+            if (method_exists($modelSearch, 'searchToValidate')) {
+                $dataProvider = $modelSearch->searchToValidate($this->queryParams);
+                if (!$enableOrder) {
+                    $dataProvider->sort = false;
+                }
+                $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
+
+                /** @var ActiveQuery $query */
+                $query = CommentToValidate::find()->andWhere(['id' => $ids]);
+
+                if (self::$countOnly) {
+                    return [CommentToValidate::class => $query->asArray()->count()];
+                }
+
+                return $query->all();
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param $enableOrder
+     * @return array|\yii\db\ActiveRecord[]
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getCommentReplyToValidate($enableOrder) {
+        if (Yii::$app->hasModule('comments')) {
+            $modelSearch = new CommentReplyToValidate();
+
+            if (method_exists($modelSearch, 'searchToValidate')) {
+                $dataProvider = $modelSearch->searchToValidate($this->queryParams);
+                if (!$enableOrder) {
+                    $dataProvider->sort = false;
+                }
+                $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
+
+                /** @var ActiveQuery $query */
+                $query = CommentReplyToValidate::find()->andWhere(['id' => $ids]);
+
+                if (self::$countOnly) {
+                    return [CommentReplyToValidate::class => $query->asArray()->count()];
+                }
+
+                return $query->all();
+            }
+        }
+
+        return [];
+    }
+
+    /**
      * @param bool $enableOrder
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getDocumentToValidate($enableOrder)
-    {
+    protected function getDocumentToValidate($enableOrder) {
         if (Yii::$app->hasModule('documenti')) {
-            $modelSearch  = new DocumentToValidate();
+            $modelSearch = new DocumentToValidate();
             $dataProvider = $modelSearch->searchToValidateDocuments($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -476,7 +532,7 @@ class MyActivities extends Model
             $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
             /** @var ActiveQuery $query */
             $query = DocumentToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [DocumentToValidate::class => $query->asArray()->count()];
@@ -493,10 +549,9 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getEventsToValidate($enableOrder)
-    {
+    protected function getEventsToValidate($enableOrder) {
         if (Yii::$app->hasModule('events')) {
-            $modelSearch  = new EventToValidate();
+            $modelSearch = new EventToValidate();
             /** @var ActiveDataProvider $dataProvider */
             $dataProvider = $modelSearch->searchToValidate($this->queryParams);
             if (!$enableOrder) {
@@ -506,7 +561,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = EventToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [EventToValidate::class => $query->asArray()->count()];
@@ -523,12 +578,11 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getOrganizationsToValidate($enableOrder)
-    {
+    protected function getOrganizationsToValidate($enableOrder) {
         if (Yii::$app->hasModule('organizations')) {
-            $modelSearch  = new OrganizationsToValidate();
+            $modelSearch = new OrganizationsToValidate();
             $dataProvider = $modelSearch
-                ->searchToValidateOrganizations($this->queryParams);
+                    ->searchToValidateOrganizations($this->queryParams);
 
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -538,7 +592,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = OrganizationsToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [OrganizationsToValidate::class => $query->asArray()->count()];
@@ -555,31 +609,30 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRequestToJoinOrganizzazioniForReferees()
-    {
+    protected function getRequestToJoinOrganizzazioniForReferees() {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
         if (!is_null($organizzazioniModule) && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests') && $organizzazioniModule->enableConfirmUsersJoinRequests
         ) {
             $organizationsIds = $organizzazioniModule
-                ->getOrganizationsRepresentedOrReferredByUserId($this->user_id, true);
+                    ->getOrganizationsRepresentedOrReferredByUserId($this->user_id, true);
 
             /** @var UserProfile $userProfileModel */
             $userProfileModel = AmosAdmin::instance()->createModel('UserProfile');
 
-            $userProfileTable                            = $userProfileModel::tableName();
+            $userProfileTable = $userProfileModel::tableName();
             $requestToJoinOrganizzazioniForRefereesTable = RequestToJoinOrganizzazioniForReferees::tableName();
 
             /** @var ActiveQuery $query */
             $query = RequestToJoinOrganizzazioniForReferees::find()
-                ->innerJoin(
-                    $userProfileTable,
-                    $userProfileTable.'.user_id = '.$requestToJoinOrganizzazioniForRefereesTable.'.user_id AND '
-                    .$userProfileTable.'.deleted_at IS NULL'
-                )
-                ->andWhere([
+                    ->innerJoin(
+                            $userProfileTable,
+                            $userProfileTable . '.user_id = ' . $requestToJoinOrganizzazioniForRefereesTable . '.user_id AND '
+                            . $userProfileTable . '.deleted_at IS NULL'
+                    )
+                    ->andWhere([
                 'profilo_id' => $organizationsIds,
-                $requestToJoinOrganizzazioniForRefereesTable.'.status' => RequestToJoinOrganizzazioniForReferees::STATUS_WAITING_REQUEST_CONFIRM
+                $requestToJoinOrganizzazioniForRefereesTable . '.status' => RequestToJoinOrganizzazioniForReferees::STATUS_WAITING_REQUEST_CONFIRM
             ]);
 
             if (self::$countOnly) {
@@ -597,33 +650,29 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRequestToJoinOrganizzazioniForEmployees()
-    {
+    protected function getRequestToJoinOrganizzazioniForEmployees() {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
-        if (!is_null($organizzazioniModule)
-            && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests')
-            && $organizzazioniModule->enableConfirmUsersJoinRequests
-            && defined(RequestToJoinOrganizzazioniForEmployees::class . '::STATUS_WAITING_OK_USER')
+        if (!is_null($organizzazioniModule) && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests') && $organizzazioniModule->enableConfirmUsersJoinRequests && defined(RequestToJoinOrganizzazioniForEmployees::class . '::STATUS_WAITING_OK_USER')
         ) {
             /** @var UserProfile $userProfileModel */
             $userProfileModel = AmosAdmin::instance()->createModel('UserProfile');
             $userProfileTable = $userProfileModel::tableName();
-            $requestsTable    = RequestToJoinOrganizzazioniForEmployees::tableName();
+            $requestsTable = RequestToJoinOrganizzazioniForEmployees::tableName();
 
             /** @var ActiveQuery $query */
             $query = RequestToJoinOrganizzazioniForEmployees::find()
-                ->innerJoin(
-                    $userProfileTable,
-                    $userProfileTable
-                    . '.user_id = '
-                    . $requestsTable
-                    . '.user_id AND '
-                    . $userProfileTable
-                    . '.deleted_at IS NULL'
-                )
-                ->andWhere([$requestsTable.'.user_id' => $this->user_id])
-                ->andWhere([$requestsTable.'.status' => RequestToJoinOrganizzazioniForEmployees::STATUS_WAITING_OK_USER]);
+                    ->innerJoin(
+                            $userProfileTable,
+                            $userProfileTable
+                            . '.user_id = '
+                            . $requestsTable
+                            . '.user_id AND '
+                            . $userProfileTable
+                            . '.deleted_at IS NULL'
+                    )
+                    ->andWhere([$requestsTable . '.user_id' => $this->user_id])
+                    ->andWhere([$requestsTable . '.status' => RequestToJoinOrganizzazioniForEmployees::STATUS_WAITING_OK_USER]);
 
             if (self::$countOnly) {
                 return [RequestToJoinOrganizzazioniForEmployees::class => $query->asArray()->count()];
@@ -640,43 +689,40 @@ class MyActivities extends Model
      * @throws \open20\amos\core\exceptions\AmosException
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRequestToJoinOrganizzazioniSediForReferees()
-    {
+    protected function getRequestToJoinOrganizzazioniSediForReferees() {
         $organizzazioniModule = Yii::$app->getModule('organizzazioni');
         /** @var \open20\amos\organizzazioni\Module $organizzazioniModule */
         if (
-            !is_null($organizzazioniModule)
-            && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests')
-            && $organizzazioniModule->enableConfirmUsersJoinRequests
+                !is_null($organizzazioniModule) && $organizzazioniModule->hasProperty('enableConfirmUsersJoinRequests') && $organizzazioniModule->enableConfirmUsersJoinRequests
         ) {
             $organizationsIds = $organizzazioniModule
-                ->getOrganizationsRepresentedOrReferredByUserId($this->user_id, true);
+                    ->getOrganizationsRepresentedOrReferredByUserId($this->user_id, true);
 
             /** @var UserProfile $userProfileModel */
             $userProfileModel = AmosAdmin::instance()->createModel('UserProfile');
             /** @var ProfiloSedi $profiloSediModel */
             $profiloSediModel = \open20\amos\organizzazioni\Module::instance()
-                ->createModel('ProfiloSedi');
+                    ->createModel('ProfiloSedi');
 
-            $userProfileTable                                = $userProfileModel::tableName();
+            $userProfileTable = $userProfileModel::tableName();
             $requestToJoinOrganizzazioniSediForRefereesTable = RequestToJoinOrganizzazioniSediForReferees::tableName();
 
             /** @var ActiveQuery $query */
             $query = RequestToJoinOrganizzazioniSediForReferees::find()
-                ->innerJoin($userProfileTable,
-                    $userProfileTable
-                    . '.user_id = '
-                    . $requestToJoinOrganizzazioniSediForRefereesTable
-                    . '.user_id AND '
-                    . $userProfileTable
-                    . '.deleted_at IS NULL'
-                )
-                ->innerJoinWith('profiloSedi')
-                ->andWhere([
-                    $profiloSediModel::tableName().'.profilo_id' => $organizationsIds,
-                    $requestToJoinOrganizzazioniSediForRefereesTable
-                        . '.status' => RequestToJoinOrganizzazioniSediForReferees::STATUS_WAITING_REQUEST_CONFIRM
-                ]);
+                    ->innerJoin($userProfileTable,
+                            $userProfileTable
+                            . '.user_id = '
+                            . $requestToJoinOrganizzazioniSediForRefereesTable
+                            . '.user_id AND '
+                            . $userProfileTable
+                            . '.deleted_at IS NULL'
+                    )
+                    ->innerJoinWith('profiloSedi')
+                    ->andWhere([
+                $profiloSediModel::tableName() . '.profilo_id' => $organizationsIds,
+                $requestToJoinOrganizzazioniSediForRefereesTable
+                . '.status' => RequestToJoinOrganizzazioniSediForReferees::STATUS_WAITING_REQUEST_CONFIRM
+            ]);
 
             if (self::$countOnly) {
                 return [RequestToJoinOrganizzazioniSediForReferees::class => $query->asArray()->count()];
@@ -693,10 +739,9 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getEenExpressionOfInterestToTakeover($enableOrder)
-    {
+    protected function getEenExpressionOfInterestToTakeover($enableOrder) {
         if (Yii::$app->hasModule('een')) {
-            $modelSearch  = new EenExpressionOfInterestToTakeover();
+            $modelSearch = new EenExpressionOfInterestToTakeover();
             $dataProvider = $modelSearch->searchEoiToTakeOver($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -705,7 +750,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = EenExpressionOfInterestToTakeover::find()
-                ->andWhere(['een_expr_of_interest.id' => $ids]);
+                    ->andWhere(['een_expr_of_interest.id' => $ids]);
 
             if (self::$countOnly) {
                 return [EenExpressionOfInterestToTakeover::class => $query->asArray()->count()];
@@ -721,23 +766,22 @@ class MyActivities extends Model
      * @return array|\yii\db\ActiveRecord[]
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getRequestToParticipateCommunityForManager()
-    {
+    protected function getRequestToParticipateCommunityForManager() {
 
         if (Yii::$app->hasModule('community')) {
             $communityModule = Yii::$app->getModule('community');
-            $communitiesIds  = $communityModule->getCommunitiesManagedByUserId($this->user_id, true);
+            $communitiesIds = $communityModule->getCommunitiesManagedByUserId($this->user_id, true);
             if (count($communitiesIds) > 0) {
                 /** @var ActiveQuery $query */
                 $query = RequestToParticipateCommunityForManager::find()
-                    ->innerJoin(
-                        UserProfile::tableName(),
-                        UserProfile::tableName().'.user_id = '.RequestToParticipateCommunityForManager::tableName()
-                        .'.user_id and '.UserProfile::tableName().'.deleted_at is NULL'
-                    )
-                    ->andWhere([
+                        ->innerJoin(
+                                UserProfile::tableName(),
+                                UserProfile::tableName() . '.user_id = ' . RequestToParticipateCommunityForManager::tableName()
+                                . '.user_id and ' . UserProfile::tableName() . '.deleted_at is NULL'
+                        )
+                        ->andWhere([
                     'community_id' => $communitiesIds,
-                    RequestToParticipateCommunityForManager::tableName().'.status' => \open20\amos\community\models\CommunityUserMm::STATUS_WAITING_OK_COMMUNITY_MANAGER
+                    RequestToParticipateCommunityForManager::tableName() . '.status' => \open20\amos\community\models\CommunityUserMm::STATUS_WAITING_OK_COMMUNITY_MANAGER
                 ]);
 
                 if (self::$countOnly) {
@@ -750,31 +794,28 @@ class MyActivities extends Model
 
         return [];
     }
-    
-    public function getProfileValidationNotifyToRead()
-    {
+
+    public function getProfileValidationNotifyToRead() {
         if (self::$countOnly) {
             return [ProfileValidationNotifyToRead::class => ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->asArray()->count()];
         }
         return ProfileValidationNotifyToRead::find()->andWhere(['user_id' => Yii::$app->user->id])->all();
     }
 
-
     /**
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getReportToRead()
-    {
+    protected function getReportToRead() {
         if (Yii::$app->hasModule('report')) {
             $reportMyInterest = [];
-            $reportModule     = Yii::$app->getModule('report');
-            $ids              = $reportModule->getOwnUnreadReports()->select('report.id');
+            $reportModule = Yii::$app->getModule('report');
+            $ids = $reportModule->getOwnUnreadReports()->select('report.id');
 
             $allReport = ReportToRead::find()
-                ->andWhere(['id' => $ids])
-                ->andWhere(['read_at' => null])
-                ->all();
+                    ->andWhere(['id' => $ids])
+                    ->andWhere(['read_at' => null])
+                    ->all();
 
             $hasModuleNews = Yii::$app->hasModule('news');
             $newsClassname = News::class;
@@ -788,8 +829,8 @@ class MyActivities extends Model
             foreach ($allReport as $report) {
                 if ($hasModuleNews && ($report->classname == $newsClassname)) {
                     $model = News::find()
-                        ->andWhere(['id' => $report->context_id])
-                        ->one();
+                            ->andWhere(['id' => $report->context_id])
+                            ->one();
 
                     if (!empty($model)) {
                         // Check if user logged is creator
@@ -801,8 +842,8 @@ class MyActivities extends Model
                         // Check if user logged is facilitator
                         /** @var UserProfile $userProfileReport */
                         $userProfileReport = UserProfile::find()
-                            ->andWhere(['user_id' => $model->created_by])
-                            ->one();
+                                ->andWhere(['user_id' => $model->created_by])
+                                ->one();
                         if ($userProfileReport->facilitatore_id == $this->user_id) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -810,7 +851,7 @@ class MyActivities extends Model
 
                         // Check if user logged is validator
                         $valUserId = $model
-                            ->getStatusLastUpdateUser(News::NEWS_WORKFLOW_STATUS_VALIDATO);
+                                ->getStatusLastUpdateUser(News::NEWS_WORKFLOW_STATUS_VALIDATO);
                         if (!is_null($valUserId) && ($valUserId == $this->user_id)) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -820,8 +861,8 @@ class MyActivities extends Model
 
                 if ($hasModuleDiscussioni && ($report->classname == $discussioniTopicClassname)) {
                     $model = DiscussioniTopic::find()
-                        ->andWhere(['id' => $report->context_id])
-                        ->one();
+                            ->andWhere(['id' => $report->context_id])
+                            ->one();
                     if (!empty($model)) {
                         // Check if user logged is creator
                         if ($model->created_by == $this->user_id) {
@@ -832,8 +873,8 @@ class MyActivities extends Model
                         // Check if user logged is facilitator
                         /** @var UserProfile $userProfileReport */
                         $userProfileReport = UserProfile::find()
-                            ->andWhere(['user_id' => $model->created_by])
-                            ->one();
+                                ->andWhere(['user_id' => $model->created_by])
+                                ->one();
                         if ($userProfileReport->facilitatore_id == $this->user_id) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -841,7 +882,7 @@ class MyActivities extends Model
 
                         // Check if user logged is validator
                         $valUserId = $model->getStatusLastUpdateUser(
-                            DiscussioniTopic::DISCUSSIONI_WORKFLOW_STATUS_ATTIVA
+                                DiscussioniTopic::DISCUSSIONI_WORKFLOW_STATUS_ATTIVA
                         );
                         if (!is_null($valUserId) && ($valUserId == $this->user_id)) {
                             $reportMyInterest[] = $report;
@@ -852,8 +893,8 @@ class MyActivities extends Model
 
                 if ($hasModuleDocumenti && ($report->classname == $documentiClassname)) {
                     $model = Documenti::find()
-                        ->andWhere(['id' => $report->context_id])
-                        ->one();
+                            ->andWhere(['id' => $report->context_id])
+                            ->one();
                     if (!empty($model)) {
                         // Check if user logged is creator
                         if ($model->created_by == $this->user_id) {
@@ -863,8 +904,8 @@ class MyActivities extends Model
                         // Check if user logged is facilitator
                         /** @var UserProfile $userProfileReport */
                         $userProfileReport = UserProfile::find()
-                            ->andWhere(['user_id' => $model->created_by])
-                            ->one();
+                                ->andWhere(['user_id' => $model->created_by])
+                                ->one();
                         if ($userProfileReport->facilitatore_id == $this->user_id) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -872,7 +913,7 @@ class MyActivities extends Model
 
                         // Check if user logged is validator
                         $valUserId = $model
-                            ->getStatusLastUpdateUser(Documenti::DOCUMENTI_WORKFLOW_STATUS_VALIDATO);
+                                ->getStatusLastUpdateUser(Documenti::DOCUMENTI_WORKFLOW_STATUS_VALIDATO);
                         if (!is_null($valUserId) && ($valUserId == $this->user_id)) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -882,8 +923,8 @@ class MyActivities extends Model
 
                 if ($hasModuleCommunity && ($report->classname == $communityClassname)) {
                     $model = \open20\amos\community\models\Community::find()
-                        ->andWhere(['id' => $report->context_id])
-                        ->one();
+                            ->andWhere(['id' => $report->context_id])
+                            ->one();
                     if (!empty($model)) {
                         // Check if user logged is creator
                         if ($model->created_by == $this->user_id) {
@@ -893,15 +934,15 @@ class MyActivities extends Model
                         // Check if user logged is facilitator
                         /** @var UserProfile $userProfileReport */
                         $userProfileReport = UserProfile::find()
-                            ->andWhere(['user_id' => $model->created_by])
-                            ->one();
+                                ->andWhere(['user_id' => $model->created_by])
+                                ->one();
                         if ($userProfileReport->facilitatore_id == $this->user_id) {
                             $reportMyInterest[] = $report;
                             continue;
                         }
                         // Check if user logged is validator
                         $valUserId = $model
-                            ->getStatusLastUpdateUser(\open20\amos\community\models\Community::COMMUNITY_WORKFLOW_STATUS_VALIDATED);
+                                ->getStatusLastUpdateUser(\open20\amos\community\models\Community::COMMUNITY_WORKFLOW_STATUS_VALIDATED);
                         if (!is_null($valUserId) && ($valUserId == $this->user_id)) {
                             $reportMyInterest[] = $report;
                             continue;
@@ -924,8 +965,7 @@ class MyActivities extends Model
      * TODO Not yet terminated
      * @return array
      */
-    protected function getSurveyToValidate()
-    {
+    protected function getSurveyToValidate() {
         if (Yii::$app->hasModule('sondaggi')) {
             return []; // SurveyToValidate::find()->all();
         }
@@ -938,10 +978,9 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getShowcaseProjectToValidate($enableOrder)
-    {
+    protected function getShowcaseProjectToValidate($enableOrder) {
         if (Yii::$app->hasModule('showcaseprojects')) {
-            $modelSearch  = new ShowcaseProjectToValidate();
+            $modelSearch = new ShowcaseProjectToValidate();
             $dataProvider = $modelSearch->searchToValidateShowcaseProjects($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -950,7 +989,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = ShowcaseProjectToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ShowcaseProjectToValidate::class => $query->asArray()->count()];
@@ -967,10 +1006,9 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getShowcaseProjectProposalToValidate($enableOrder)
-    {
+    protected function getShowcaseProjectProposalToValidate($enableOrder) {
         if (Yii::$app->hasModule('showcaseprojects')) {
-            $modelSearch  = new ShowcaseProjectProposalToValidate();
+            $modelSearch = new ShowcaseProjectProposalToValidate();
             $dataProvider = $modelSearch->searchToValidateShowcaseProjectProposals($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -979,7 +1017,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = ShowcaseProjectProposalToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ShowcaseProjectProposalToValidate::class => $query->asArray()->count()];
@@ -996,17 +1034,16 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getShowcaseProjectUserToAccept($enableOrder)
-    {
+    protected function getShowcaseProjectUserToAccept($enableOrder) {
         if (Yii::$app->hasModule('showcaseprojects')) {
             $modelSearch = new ShowcaseProjectUserToAccept();
-            $query       = $modelSearch->searchShowcaseProjectUserToAccept($this->queryParams);
+            $query = $modelSearch->searchShowcaseProjectUserToAccept($this->queryParams);
 
             $ids = ArrayHelper::map($query->all(), 'id', 'id');
 
             /** @var ActiveQuery $query */
             $query = ShowcaseProjectUserToAccept::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ShowcaseProjectUserToAccept::class => $query->asArray()->count()];
@@ -1023,10 +1060,9 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getResultsToValidate($enableOrder)
-    {
+    protected function getResultsToValidate($enableOrder) {
         if (Yii::$app->hasModule('results')) {
-            $modelSearch  = new ResultsToValidate();
+            $modelSearch = new ResultsToValidate();
             $dataProvider = $modelSearch->searchToValidateResults($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -1035,7 +1071,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = ResultsToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ResultsToValidate::class => $query->asArray()->count()];
@@ -1052,10 +1088,9 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getProposalResultsToValidate($enableOrder)
-    {
+    protected function getProposalResultsToValidate($enableOrder) {
         if (Yii::$app->hasModule('results')) {
-            $modelSearch  = new ResultsProposalToValidate();
+            $modelSearch = new ResultsProposalToValidate();
             $dataProvider = $modelSearch->searchToValidateResultProposals($this->queryParams);
             if (!$enableOrder) {
                 $dataProvider->sort = false;
@@ -1064,7 +1099,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = ResultsProposalToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ResultsProposalToValidate::class => $query->asArray()->count()];
@@ -1082,10 +1117,9 @@ class MyActivities extends Model
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    protected function getPartnershipProfilesToValidate($enableOrder)
-    {
+    protected function getPartnershipProfilesToValidate($enableOrder) {
         if (Yii::$app->hasModule('partnershipprofiles')) {
-            $modelSearch  = new PartnershipProfileToValidate();
+            $modelSearch = new PartnershipProfileToValidate();
             $dataProvider = $modelSearch->searchForFacilitator($this->queryParams);
             $dataProvider->query->andWhere(['status' => PartnershipProfiles::PARTNERSHIP_PROFILES_WORKFLOW_STATUS_TOVALIDATE]);
             if (!$enableOrder) {
@@ -1095,7 +1129,7 @@ class MyActivities extends Model
 
             /** @var ActiveQuery $query */
             $query = PartnershipProfileToValidate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [PartnershipProfileToValidate::class => $query->asArray()->count()];
@@ -1112,16 +1146,15 @@ class MyActivities extends Model
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    protected function getRequestExternalFacilitator()
-    {
+    protected function getRequestExternalFacilitator() {
         if (Yii::$app->hasModule(AmosAdmin::getModuleName())) {
-            $modelSearch  = new RequestExternalFacilitator();
+            $modelSearch = new RequestExternalFacilitator();
             $dataProvider = $modelSearch->searchRequestPending($this->queryParams);
-            $ids          = ArrayHelper::map($dataProvider->models, 'id', 'id');
+            $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
 
             /** @var ActiveQuery $query */
             $query = RequestExternalFacilitator::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [RequestExternalFacilitator::class => $query->asArray()->count()];
@@ -1136,16 +1169,15 @@ class MyActivities extends Model
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    protected function getExpressionOfInterestToEvaluate()
-    {
+    protected function getExpressionOfInterestToEvaluate() {
         if (Yii::$app->hasModule('partnershipprofiles')) {
-            $modelSearch  = new ExpressionOfInterestToEvaluate();
+            $modelSearch = new ExpressionOfInterestToEvaluate();
             $dataProvider = $modelSearch->searchForFacilitator($this->queryParams);
-            $ids          = ArrayHelper::map($dataProvider->models, 'id', 'id');
+            $ids = ArrayHelper::map($dataProvider->models, 'id', 'id');
 
             /** @var ActiveQuery $query */
             $query = ExpressionOfInterestToEvaluate::find()
-                ->andWhere(['id' => $ids]);
+                    ->andWhere(['id' => $ids]);
 
             if (self::$countOnly) {
                 return [ExpressionOfInterestToEvaluate::class => $query->asArray()->count()];
@@ -1160,8 +1192,7 @@ class MyActivities extends Model
     /**
      * @return string
      */
-    public function __toString()
-    {
+    public function __toString() {
         return AmosMyActivities::t('amosmyactivities', 'My activities');
     }
 }

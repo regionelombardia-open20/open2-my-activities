@@ -23,7 +23,16 @@ $userProfile = $model->createdUserProfile;
 $profilo = $model->profilo;
 
 ?>
-<?php if (Yii::$app->user->can('CONFIRM_ORGANIZZAZIONI_OR_SEDI_USER_REQUEST', ['model' => $model]) && !empty($userProfile)): ?>
+
+<?php
+/** Task 25541
+ * Commentato controllo sotto perché la rule "confirmUserRequest" associata al permesso CONFIRM_ORGANIZZAZIONI_OR_SEDI_USER_REQUEST
+ * attualmente restituisce true solo se è specificato un referente_operativo o un rappresentante_legale.
+ * Se non è presentente nessuno dei due, viene comunque inviata la mail all'invitato e si aggiorna il counterMyActivities,
+ * ma l'utente non vede la richiesta nel suo myActivities.
+ */
+
+//if (Yii::$app->user->can('CONFIRM_ORGANIZZAZIONI_OR_SEDI_USER_REQUEST', ['model' => $model]) && !empty($userProfile)): ?>
     <?php
     $nomeCognome = $userProfile->getNomeCognome();
     $linkText = AmosIcons::show('search', [], 'dash') . ' ' . AmosMyActivities::t('amosmyactivities', '#view_organization');
@@ -82,4 +91,4 @@ $profilo = $model->profilo;
         </div>
     </div>
     <hr />
-<?php endif; ?>
+<?php //endif; ?>

@@ -16,6 +16,7 @@ return [
     'Ascending' => 'Crescente',
     ' asks connection for:' => 'Chiede di collaborare al progetto:',
     ' asks to accept the invitation to participate you to the community:' => ' chiede di accettare l\'invito di partecipazione che ti ha inviato per la community:',
+    ' asks to accept the invitation to participate you to the channel:' => ' chiede di accettare l\'invito di partecipazione che ti ha inviato per il canale:',
     ' asks to be validated' => ' chiede di essere validato',
     ' asks validation for:' => ' chiede la validazione per:',
     ' asks you to be accepted as a community participant of your Community' => ' chiede di essere accettato/a come partecipante della community di cui sei Community Manager:',
@@ -79,4 +80,6 @@ return [
     'View profile' => 'Vedi profilo',
     'Folder Validation' => 'Validazione Cartella',
     'Validation profile' => 'Validazione organizzazione',
+    'Validation comment' => 'Validazione commento',
+    'Validation comment answer' => 'Validazione risposta a commento',
 ];

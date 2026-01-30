@@ -24,6 +24,8 @@ class AmosMyActivities extends AmosModule
     public $name = 'MYACTIVITIES';
     
     public $orderType = SORT_DESC;
+    
+    public $documentPath = true;
 
 
     /**
