@@ -1,5 +1,6 @@
 {
   "name": "open20/amos-my-activities",
+  "license": "GPL-3.0-or-later",
   "description": "AMOS plugin to manage platform activities)",
   "keywords": ["amos", "yii2", "activities", "myactivities"],
   "homepage": "http://www.open20.it/",
